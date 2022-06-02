@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
+import androidx.compose.ui.draw.rotate
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.R.drawable
@@ -87,7 +88,7 @@ fun AccumulationPage(navController: NavController, weeks: String){
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
-                        .absoluteOffset(x = (-15).dp, y = 80.dp),
+                        .absoluteOffset(x = (-15).dp, y = 50.dp),
 
                 )
                 Text(
@@ -99,7 +100,7 @@ fun AccumulationPage(navController: NavController, weeks: String){
 //                        .size(340.dp, 70.dp)
                         .fillMaxWidth()
                         .align(Alignment.TopCenter)
-                        .absoluteOffset(x = (-15).dp, y = 110.dp),
+                        .absoluteOffset(x = (-15).dp, y = 90.dp),
 
                     )
                 Row(
@@ -112,10 +113,10 @@ fun AccumulationPage(navController: NavController, weeks: String){
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    StampsOfAWeek(false, 6, 1, 6, 8, 1)
-                    StampsOfAWeek(false, 6, 1, 6, 8, 5)
-                    StampsOfAWeek(false, 6, 1, 6, 8, 3)
-                    StampsOfAWeek(true, 6, 1, 6, 8, 7)
+                    StampsOfAWeek(false, 6, 1, 6, 8, 1, 10)
+                    StampsOfAWeek(false, 6, 1, 6, 8, 9, 20)
+                    StampsOfAWeek(false, 6, 1, 6, 8, 0, 30)
+                    StampsOfAWeek(true, 6, 1, 6, 8, 4, 2)
                 }
                 Row(
                     modifier = Modifier
@@ -184,9 +185,10 @@ fun AccumulationPage(navController: NavController, weeks: String){
 @Composable
 fun StampsOfAWeek(thisWeek: Boolean, startDate_Month: Int, startDate: Int,
                   endDate_Month: Int, endDate: Int,
-                  ratioOfBar: Int /*use this to change the img*/){
+                  ratioOfBar: Int /*use this to change the img*/,
+                  number: Int){
     val img = when (ratioOfBar) {
-        10 -> painterResource(id = drawable.bar_10)
+        1 -> painterResource(id = drawable.bar_1)
         2 -> painterResource(id = drawable.bar_2)
         3 -> painterResource(id = drawable.bar_3)
         4 -> painterResource(id = drawable.bar_4)
@@ -195,15 +197,34 @@ fun StampsOfAWeek(thisWeek: Boolean, startDate_Month: Int, startDate: Int,
         7 -> painterResource(id = drawable.bar_7)
         8 -> painterResource(id = drawable.bar_8)
         9 -> painterResource(id = drawable.bar_9)
-        else -> painterResource(id = drawable.bar_1)
+        else -> painterResource(id = drawable.bar_0)
+    }
+    val offset = when (ratioOfBar) {
+        1 -> 28
+        2 -> 48
+        3 -> 86
+        4 -> 123
+        5 -> 160
+        6 -> 190
+        7 -> 217
+        8 -> 254
+        9 -> 276
+        else -> 25
     }
     Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom) {
          Image(
              painter = img,
              contentDescription = null,
-             modifier = Modifier.fillMaxHeight(0.8f).size(70.dp)
+             modifier = Modifier.fillMaxHeight(0.8f)
+                                .size(70.dp)
+                                .absoluteOffset(y = 40.dp)
          )
+        Text(text = number.toString(),
+            color = colors.onSecondary,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.absoluteOffset(y = -offset.dp).rotate(-6.49f)
+        )
         if (thisWeek) {
             Text(text = "本周",
                 color = colors.onSecondary,
