@@ -1,3 +1,4 @@
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -107,14 +108,14 @@ fun AccumulationPage(navController: NavController, weeks: String){
                         .fillMaxWidth(0.75f)
                         .fillMaxHeight(0.8f)
                         .align(Alignment.BottomCenter)
-                        .absoluteOffset(x = (-20).dp, y = (-80).dp),
+                        .absoluteOffset(x = (-25).dp, y = (-80).dp),
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    StampsOfAWeek(false, 6, 1, 6, 8, 1)
                     StampsOfAWeek(false, 6, 1, 6, 8, 5)
-                    StampsOfAWeek(false, 6, 1, 6, 8, 5)
-                    StampsOfAWeek(false, 6, 1, 6, 8, 5)
-                    StampsOfAWeek(true, 6, 1, 6, 8, 5)
+                    StampsOfAWeek(false, 6, 1, 6, 8, 3)
+                    StampsOfAWeek(true, 6, 1, 6, 8, 7)
                 }
                 Row(
                     modifier = Modifier
@@ -184,11 +185,24 @@ fun AccumulationPage(navController: NavController, weeks: String){
 fun StampsOfAWeek(thisWeek: Boolean, startDate_Month: Int, startDate: Int,
                   endDate_Month: Int, endDate: Int,
                   ratioOfBar: Int /*use this to change the img*/){
+    val img = when (ratioOfBar) {
+        10 -> painterResource(id = drawable.bar_10)
+        2 -> painterResource(id = drawable.bar_2)
+        3 -> painterResource(id = drawable.bar_3)
+        4 -> painterResource(id = drawable.bar_4)
+        5 -> painterResource(id = drawable.bar_5)
+        6 -> painterResource(id = drawable.bar_6)
+        7 -> painterResource(id = drawable.bar_7)
+        8 -> painterResource(id = drawable.bar_8)
+        9 -> painterResource(id = drawable.bar_9)
+        else -> painterResource(id = drawable.bar_1)
+    }
     Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom) {
          Image(
-             painter = painterResource(id = drawable.bar_3),
-             contentDescription = null
+             painter = img,
+             contentDescription = null,
+             modifier = Modifier.fillMaxHeight(0.8f).size(70.dp)
          )
         if (thisWeek) {
             Text(text = "本周",
