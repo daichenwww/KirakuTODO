@@ -1,5 +1,6 @@
 # KirakuTODO
 0605 早上更新：
+
 有用到master的最新版去改了，也確定可以動，所以就merge回master了。
 
 然後他可能會要安裝Java, 更新一些環境變數之類。
