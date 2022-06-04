@@ -1,43 +1,18 @@
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Red
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.modifier.modifierLocalOf
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.ui.theme.*
-import kotlinx.coroutines.launch
 
 @Composable
 fun AddTaskPage(navController: NavController){
@@ -147,7 +122,7 @@ fun AddTaskPage(navController: NavController){
                 Button( modifier = Modifier.size(75.dp, 55.dp),
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (selected1.value) RedTagPressed else RedTag
+                        backgroundColor = if (selected1.value) RedTag else LightRedTag
                     ),
                     onClick = { /*TODO*/
                         selected1.value = !selected1.value
@@ -162,7 +137,7 @@ fun AddTaskPage(navController: NavController){
                 Button( modifier = Modifier.size(75.dp, 55.dp),
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (selected2.value) YellowTagPressed else YellowTag
+                        backgroundColor = if (selected2.value) YellowTag else LightYellowTag
                     ),
                     onClick = { /*TODO*/
                         selected2.value = !selected2.value
@@ -177,7 +152,7 @@ fun AddTaskPage(navController: NavController){
                 Button( modifier = Modifier.size(75.dp, 55.dp),
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (selected3.value) BlueTagPressed else BlueTag
+                        backgroundColor = if (selected3.value) BlueTag else LightBlueTag
                     ),
                     onClick = { /*TODO*/
                         selected3.value = !selected3.value
