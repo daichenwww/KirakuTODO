@@ -1,4 +1,13 @@
 # KirakuTODO
+0606 更：
+測試上傳有沒有成功
+加入了collection的database
+更動檔案架構
+加入更多貓貓印章的圖片
+加入註解
+還沒寫collection裡面的內容
+
+
 0605 早上更新：
 
 有用到master的最新版去改了，也確定可以動，所以就merge回master了。
