@@ -10,9 +10,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.Image
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.R.drawable
+import com.example.afinal.ui.theme.FinalTheme
 
 @Composable
 fun AccumulationPage(navController: NavController, weeks: String){
@@ -224,11 +226,12 @@ fun StampsOfAWeek(thisWeek: Boolean, startDate_Month: Int, startDate: Int,
     }
 }
 
-
-//@Preview
-//@Composable
-//fun AccumulationPreview() {
-//    FinalTheme{
-//        AccumulationPage("1")
-//    }
-//}
+/*
+@Preview
+@Composable
+fun AccumulationPreview() {
+    FinalTheme{
+        AccumulationPage("1")
+    }
+}
+*/

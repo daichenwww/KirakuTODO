@@ -65,6 +65,7 @@ fun StampsBookPage(navController: NavController, page: String){
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        // if (page==1), 總共會有16/6=3頁
                         Row(
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -95,6 +96,8 @@ fun StampsBookPage(navController: NavController, page: String){
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            // 回到上一頁
+                            // navController.navigate("addtask")
                             IconButton(onClick = { /*TODO*/ }) {
                                 if (true){
                                     Image(
@@ -124,6 +127,7 @@ fun StampsBookPage(navController: NavController, page: String){
                                 style = MaterialTheme.typography.body2,
                                 color = MaterialTheme.colors.onSecondary
                             )
+                            // 下一頁
                             IconButton(onClick = { /*TODO*/ }) {
                                 if (true){
                                     Image(
@@ -153,6 +157,7 @@ fun StampsBookPage(navController: NavController, page: String){
                         .fillMaxWidth()
                         .absoluteOffset(x = (-15).dp)
                 ) {
+                    // 按說明按鈕會到哪裡？
                     Button( shape = RoundedCornerShape(30.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
                         onClick = { /*TODO*/ }
@@ -164,6 +169,7 @@ fun StampsBookPage(navController: NavController, page: String){
                         )
                     }
                     Spacer(modifier = Modifier.size(80.dp, 2.dp))
+                    // 按分享按鈕要到分享頁面
                     Button( shape = RoundedCornerShape(30.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
                         onClick = { /*TODO*/ }
@@ -216,8 +222,75 @@ fun Meow(number: String, locked: Boolean, unlockedCondition: String, /*image: ?*
                     contentDescription = null,
                     modifier = Modifier.size(140.dp, 90.dp)
                 )}
+                "005"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_005),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "006"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_006),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "007"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_007),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "008"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_008),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "009"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_009),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "010"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_010),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "011"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_011),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "012"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_012),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "013"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_013),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "014"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_014),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "015"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_015),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
             }
         }
+        // locked
         else Image(
                 painter = painterResource(id = R.drawable.stamp_undefined),
                 contentDescription = null,
