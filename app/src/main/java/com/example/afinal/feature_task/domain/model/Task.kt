@@ -12,7 +12,7 @@ data class Task(
     val doneDay: Int,
     val tag: Int,
     val autoPlan: Boolean,
-    val esTimeCost: Int,
+    val esTimeCost: String //30 min, 1hr, 2hr...
 ) {
     companion object{
         val taskColors = listOf(RedTag, YellowTag, GreenTag, BlueTag, PurpleTag)

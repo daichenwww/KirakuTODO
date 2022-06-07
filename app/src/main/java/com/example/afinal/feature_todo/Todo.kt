@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.domain.model
+package com.example.afinal.feature_todo
 
 // TODO: Create database, repository for Todo
 data class Todo(

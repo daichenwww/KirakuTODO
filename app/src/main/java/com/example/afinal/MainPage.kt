@@ -1,20 +1,10 @@
 package com.example.afinal
 
-import AccumulationPage
-import AddTaskPage
-import HelpPage
-import SettingPage
-import StampsBookPage
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.afinal.ui.theme.FinalTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -31,46 +21,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.afinal.R.drawable
-
-
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            FinalTheme {
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = "mainpage"
-                ){
-                    composable("mainpage") { MainPage(navController = navController)}
-                    composable("addtask")  { AddTaskPage(navController = navController)}
-                    composable("setting")  { SettingPage(navController = navController)}
-                    composable("accumulation")  { AccumulationPage(navController = navController, "1")}
-                    composable("stampsbook")  { StampsBookPage(navController = navController, "1")}
-                    composable("help")  { HelpPage(navController = navController)}
-                }
-
-            }
-        }
-    }
-}
-
-
-fun sideBarShape() =  object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
-    }
-}
+import com.example.afinal.feature_task.presentation.tasks.component.SideBar
 
 @Composable
 fun MainPage(navController: NavController) {
@@ -102,7 +54,7 @@ fun MainPage(navController: NavController) {
                 },
                 title = {
                     Text(text= " May 2022", style = MaterialTheme.typography.h2,
-                    modifier = Modifier.absoluteOffset(x = (-10).dp))
+                        modifier = Modifier.absoluteOffset(x = (-10).dp))
                 },
                 actions = {
                     IconButton(
@@ -115,7 +67,7 @@ fun MainPage(navController: NavController) {
                                 modifier = Modifier
                                     .size(40.dp)
                                     .absoluteOffset(x = (-10).dp)
-                        ) }
+                            ) }
                         else {Image(
                             painter = painterResource(id = drawable.ic_modedeadline),
                             contentDescription = null,
@@ -159,122 +111,6 @@ fun MainPage(navController: NavController) {
     }
 }
 
-@Composable
-fun SideBar(navController: NavController) { // 這個drawer的大小好像只能改形狀沒辦法改他點掉要推出的範圍
-    Column( modifier = Modifier
-        .fillMaxHeight()
-        .size(150.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top){
-        Box(
-            modifier = Modifier
-                .background(MaterialTheme.colors.primary)
-                .size(150.dp, 80.dp),
-            contentAlignment = Alignment.CenterEnd
-        ){
-            Image(
-                painter = painterResource(id = drawable.ic_menu),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .absoluteOffset(x = (-15).dp)
-            )
-        }
-        Button(
-            modifier = Modifier.size(150.dp, 60.dp),
-            onClick = {navController.navigate("setting")},
-            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
-            elevation = null,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
-        ){
-            Image(
-                painter = painterResource(id = drawable.ic_setting),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(start = 7.dp, end = 7.dp)
-            )
-            Text(
-                text="設定",
-                style = MaterialTheme.typography.h3,
-                color = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
-            ) }
-        Button(
-            modifier = Modifier.size(150.dp, 60.dp),
-            onClick = {navController.navigate("accumulation")},
-            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
-            elevation = null,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
-        ){
-            Image(
-                painter = painterResource(id = drawable.ic_weeks),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(start = 7.dp, end = 7.dp)
-            )
-            Text(
-                text="累計",
-                style = MaterialTheme.typography.h3,
-                color = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
-         ) }
-        Button(
-            modifier = Modifier.size(150.dp, 60.dp),
-            onClick = {navController.navigate("stampsbook")},
-            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
-            elevation = null,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
-        ){
-            Image(
-                painter = painterResource(id = drawable.ic_book),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(start = 7.dp, end = 7.dp)
-            )
-            Text(
-                text="圖鑑",
-                style = MaterialTheme.typography.h3,
-                color = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
-            ) }
-        Button(
-            modifier = Modifier.size(150.dp, 60.dp),
-            onClick = {navController.navigate("help")},
-            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
-            elevation = null,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
-        ){
-            Image(
-                painter = painterResource(id = drawable.ic_help),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(start = 7.dp, end = 7.dp)
-            )
-            Text(
-                text="說明",
-                style = MaterialTheme.typography.h3,
-                color = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
-            ) }
-    }
-}
-
-data class TasksList(
-    /*todo*/
-    val date: Int,
-    val numOfTasks: Int,
-
-)
-data class StampsList(
-    /*todo*/
-    val date: Int,
-    val numOfStamps: Int,
-
-    )
 @Composable
 fun DateAndTask(/*date: Int, day: String,
                 numberOfTasks: Int, tasks: com.example.afinal.TasksList,
@@ -338,7 +174,7 @@ fun DateAndTask(/*date: Int, day: String,
             Image(
                 painter = painterResource(id = drawable.tag_yellow),
                 contentDescription = null,
-                )
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "TODO XXXXX",
@@ -457,21 +293,15 @@ fun DatesAndTasks(mode: Boolean){ // 可能要用list傳資料進來
     }
 }
 
-@Composable
-fun Todos(){ // 如果寫成函式好像沒辦法照hifi的間距拉
-    Row(modifier = Modifier
-        .padding(start = 30.dp)
-        .background(color = Color.Black)){
-        Image(
-            painter = painterResource(id = drawable.tag_blue),
-            contentDescription = null,
-            )
-        Text(text = "TODO XXXXX", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.secondary)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = "1hr", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSecondary)
+fun sideBarShape() =  object : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
     }
 }
-
 //@Preview(showBackground = true)
 //@Composable
 //fun DefaultPreview() {

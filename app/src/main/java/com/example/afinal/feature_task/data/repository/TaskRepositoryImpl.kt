@@ -18,10 +18,10 @@ class TaskRepositoryImpl (
     }
 
     override suspend fun insertTask(task: Task) {
-        return dao.insertTask(task)
+        dao.insertTask(task)
     }
 
     override suspend fun deleteTask(task: Task) {
-        return dao.deleteTask(task)
+        dao.deleteTask(task)
     }
 }
