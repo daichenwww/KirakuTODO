@@ -1,6 +1,8 @@
 package com.example.afinal
 
 
+import AddTaskPage
+import MainPage
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,12 +17,12 @@ import com.example.afinal.feature_task.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 
-import AccumulationPage
-import AddTaskPage
-import HelpPage
-import SettingPage
-import StampsBookPage
-import com.example.afinal.MainPage
+//import AccumulationPage
+//import AddTaskPage
+//import HelpPage
+//import SettingPage
+//import StampsBookPage
+//import MainPage
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

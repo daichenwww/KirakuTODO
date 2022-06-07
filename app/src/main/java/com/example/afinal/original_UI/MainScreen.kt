@@ -1,35 +1,43 @@
-package com.example.afinal
-
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import kotlinx.coroutines.launch
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.afinal.R.drawable
-import com.example.afinal.feature_task.presentation.tasks.component.SideBar
+import com.example.afinal.R
+import kotlinx.coroutines.launch
+
+fun sideBarShape() =  object : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
+    }
+}
 
 @Composable
 fun MainPage(navController: NavController) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 //    var selectIndex by remember { mutableStateOf(0) }
-    var modeState by remember { mutableStateOf(true)}
+    var modeState by remember { mutableStateOf(true) }
     //val navTextList = listOf("主頁", "發現", "我的")
     //val iconList = listOf(Icons.Default.Home, Icons.Default.Favorite, Icons.Default.AccountBox)
     Scaffold(
@@ -44,7 +52,7 @@ fun MainPage(navController: NavController) {
                         onClick = { scope.launch { scaffoldState.drawerState.open() } }
                     ) {
                         Image(
-                            painter = painterResource(id = drawable.ic_menu),
+                            painter = painterResource(id = R.drawable.ic_menu),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(40.dp)
@@ -62,14 +70,15 @@ fun MainPage(navController: NavController) {
                     ) {
                         if (modeState) {
                             Image(
-                                painter = painterResource(id = drawable.ic_modetodo),
+                                painter = painterResource(id = R.drawable.ic_modetodo),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(40.dp)
                                     .absoluteOffset(x = (-10).dp)
                             ) }
-                        else {Image(
-                            painter = painterResource(id = drawable.ic_modedeadline),
+                        else {
+                            Image(
+                            painter = painterResource(id = R.drawable.ic_modedeadline),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(45.dp)
@@ -112,6 +121,122 @@ fun MainPage(navController: NavController) {
 }
 
 @Composable
+fun SideBar(navController: NavController) { // 這個drawer的大小好像只能改形狀沒辦法改他點掉要推出的範圍
+    Column( modifier = Modifier
+        .fillMaxHeight()
+        .size(150.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Top){
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.primary)
+                .size(150.dp, 80.dp),
+            contentAlignment = Alignment.CenterEnd
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_menu),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .absoluteOffset(x = (-15).dp)
+            )
+        }
+        Button(
+            modifier = Modifier.size(150.dp, 60.dp),
+            onClick = {navController.navigate("setting")},
+            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
+            elevation = null,
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_setting),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(start = 7.dp, end = 7.dp)
+            )
+            Text(
+                text="設定",
+                style = MaterialTheme.typography.h3,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
+            ) }
+        Button(
+            modifier = Modifier.size(150.dp, 60.dp),
+            onClick = {navController.navigate("accumulation")},
+            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
+            elevation = null,
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_weeks),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(start = 7.dp, end = 7.dp)
+            )
+            Text(
+                text="累計",
+                style = MaterialTheme.typography.h3,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
+            ) }
+        Button(
+            modifier = Modifier.size(150.dp, 60.dp),
+            onClick = {navController.navigate("stampsbook")},
+            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
+            elevation = null,
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_book),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(start = 7.dp, end = 7.dp)
+            )
+            Text(
+                text="圖鑑",
+                style = MaterialTheme.typography.h3,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
+            ) }
+        Button(
+            modifier = Modifier.size(150.dp, 60.dp),
+            onClick = {navController.navigate("help")},
+            contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
+            elevation = null,
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_help),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(start = 7.dp, end = 7.dp)
+            )
+            Text(
+                text="說明",
+                style = MaterialTheme.typography.h3,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier.padding(start = 7.dp, end = 7.dp)
+            ) }
+    }
+}
+
+data class TasksList(
+    /*todo*/
+    val date: Int,
+    val numOfTasks: Int,
+
+    )
+data class StampsList(
+    /*todo*/
+    val date: Int,
+    val numOfStamps: Int,
+
+    )
+@Composable
 fun DateAndTask(/*date: Int, day: String,
                 numberOfTasks: Int, tasks: com.example.afinal.TasksList,
                 numberOfStamps: Int, stamps: com.example.afinal.StampsList
@@ -133,12 +258,12 @@ fun DateAndTask(/*date: Int, day: String,
             }
             Spacer(modifier = Modifier.width(8.dp))
             Image(
-                painter = painterResource(id = drawable.s_000),
+                painter = painterResource(id = R.drawable.s_000),
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(8.dp))
             Image(
-                painter = painterResource(id = drawable.s_001),
+                painter = painterResource(id = R.drawable.s_001),
                 contentDescription = null
             )
         }
@@ -148,7 +273,7 @@ fun DateAndTask(/*date: Int, day: String,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = drawable.tag_blue),
+                painter = painterResource(id = R.drawable.tag_blue),
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -172,7 +297,7 @@ fun DateAndTask(/*date: Int, day: String,
                 .padding(start = 5.dp)
         ) {
             Image(
-                painter = painterResource(id = drawable.tag_yellow),
+                painter = painterResource(id = R.drawable.tag_yellow),
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -217,12 +342,12 @@ fun DateAndDeadline(/*date: Int, day: String,
             }
             Spacer(modifier = Modifier.width(8.dp))
             Image(
-                painter = painterResource(id = drawable.s_000),
+                painter = painterResource(id = R.drawable.s_000),
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(8.dp))
             Image(
-                painter = painterResource(id = drawable.s_001),
+                painter = painterResource(id = R.drawable.s_001),
                 contentDescription = null
             )
         }
@@ -232,7 +357,7 @@ fun DateAndDeadline(/*date: Int, day: String,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = drawable.tag_blue),
+                painter = painterResource(id = R.drawable.tag_blue),
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -256,7 +381,7 @@ fun DateAndDeadline(/*date: Int, day: String,
                 .padding(start = 5.dp)
         ) {
             Image(
-                painter = painterResource(id = drawable.tag_yellow),
+                painter = painterResource(id = R.drawable.tag_yellow),
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -285,7 +410,8 @@ fun DatesAndTasks(mode: Boolean){ // 可能要用list傳資料進來
     LazyColumn( modifier = Modifier
         .fillMaxWidth()
         .absoluteOffset(x = (-4).dp, y = (-15).dp),
-        contentPadding = PaddingValues(15.dp)){
+        contentPadding = PaddingValues(15.dp)
+    ){
         items(10){
             if (mode) DateAndTask()
             else DateAndDeadline()
@@ -293,15 +419,21 @@ fun DatesAndTasks(mode: Boolean){ // 可能要用list傳資料進來
     }
 }
 
-fun sideBarShape() =  object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
+@Composable
+fun Todos(){ // 如果寫成函式好像沒辦法照hifi的間距拉
+    Row(modifier = Modifier
+        .padding(start = 30.dp)
+        .background(color = Color.Black)){
+        Image(
+            painter = painterResource(id = R.drawable.tag_blue),
+            contentDescription = null,
+        )
+        Text(text = "TODO XXXXX", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.secondary)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "1hr", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSecondary)
     }
 }
+
 //@Preview(showBackground = true)
 //@Composable
 //fun DefaultPreview() {
