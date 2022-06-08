@@ -24,13 +24,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.afinal.R
 import com.example.afinal.R.drawable
+import com.example.afinal.feature_task.presentation.tasks.component.ListwithHeader
 import com.example.afinal.feature_task.presentation.tasks.component.SideBar
 import com.example.afinal.feature_task.presentation.tasks.component.TaskItem
 import com.example.afinal.feature_task.presentation.util.Screen
+import com.example.afinal.ui.theme.FinalTheme
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun TasksScreen(
@@ -62,12 +64,13 @@ fun TasksScreen(
                     }
                 },
                 title = {
-                    Text(text= " May 2022", style = MaterialTheme.typography.h2, //TODO: Update Title
+                    Text(text= "June 2022",
+                        style = MaterialTheme.typography.h2, //TODO: Update Title
                         modifier = Modifier.absoluteOffset(x = (-10).dp))
                 },
                 actions = {
                     IconButton(
-                        { navController.navigate("mainpage") }
+                        { navController.navigate(Screen.AddEditTaskScreen.route) }
                         // TODO: navigate to TODO screen
                     ) {
                         Image(
@@ -77,6 +80,7 @@ fun TasksScreen(
                                 .size(40.dp)
                                 .absoluteOffset(x = (-10).dp)
                         )
+                        //for deadline image: Image(ic_modedeadline, size(45.dp)
                     }
                 }
             )
@@ -86,7 +90,7 @@ fun TasksScreen(
                 backgroundColor = MaterialTheme.colors.onPrimary,
                 contentColor = MaterialTheme.colors.background,
                 modifier = Modifier.size(100.dp),
-                onClick = { navController.navigate("mainpage")} //Screen.AddEditTaskScreen.route) }
+                onClick = { navController.navigate(Screen.AddEditTaskScreen.route) }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -102,25 +106,8 @@ fun TasksScreen(
         drawerBackgroundColor = MaterialTheme.colors.background,
         drawerGesturesEnabled = true,
         drawerScrimColor = Color(0x33000000), //半透明灰色
-    ) { // main content
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth().absoluteOffset(x = (-4).dp, y = (-15).dp),
-            contentPadding = PaddingValues(15.dp)
-        ){
-            // TODO: add date and stamp
-            items(state.tasks) { task ->
-                TaskItem(
-                    task = task,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            navController.navigate("addtask")
-                                // Screen.AddEditTaskScreen.route + "?taskId=${task.id}")
-                        }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
+    ) {
+        ListwithHeader(state, navController)
     }
 }
 
@@ -133,4 +120,3 @@ private fun sideBarShape() =  object : Shape {
         return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
     }
 }
-

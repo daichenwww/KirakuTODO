@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-//import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskScreen
+import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskScreen
 import com.example.afinal.feature_task.presentation.tasks.TasksScreen
 import com.example.afinal.feature_task.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,11 +28,11 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-//                         startDestination = "addtask"
+//                        startDestination = "mainpage"
                         startDestination = Screen.TasksScreen.route
                     ){
                         composable(route = Screen.TasksScreen.route) { TasksScreen(navController = navController) }
-                        /*composable(
+                        composable(
                             route = Screen.AddEditTaskScreen.route +
                                     "?taskId={taskId}",
                             arguments = listOf(
@@ -43,10 +43,7 @@ class MainActivity : ComponentActivity() {
                                     defaultValue = -1
                                 }
                             )
-                        ) {
-                            AddEditTaskScreen(navController = navController)
-                        }*/
-//                        composable("mainpage") { MainPage(navController = navController)}
+                        ) { AddEditTaskScreen(navController = navController) }
 //                        composable("addtask")  { AddTaskPage(navController = navController)}
 //                        composable("setting")  { SettingPage(navController = navController)}
 //                        composable("accumulation")  { AccumulationPage(navController = navController, "1")}
