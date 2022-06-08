@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
@@ -29,7 +28,9 @@ import com.example.afinal.R
 import com.example.afinal.R.drawable
 import com.example.afinal.feature_task.presentation.tasks.component.SideBar
 import com.example.afinal.feature_task.presentation.tasks.component.TaskItem
+import com.example.afinal.feature_task.presentation.util.Screen
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun TasksScreen(
@@ -85,10 +86,7 @@ fun TasksScreen(
                 backgroundColor = MaterialTheme.colors.onPrimary,
                 contentColor = MaterialTheme.colors.background,
                 modifier = Modifier.size(100.dp),
-                onClick = {
-                    navController.navigate("mainpage") //TODO: navigate to ADD task screen
-                    // navController.navigate(Screen.AddEditNoteScreen.route)
-                }
+                onClick = { navController.navigate("mainpage")} //Screen.AddEditTaskScreen.route) }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -98,9 +96,7 @@ fun TasksScreen(
             }
         },
         floatingActionButtonPosition = FabPosition.End,
-        drawerContent = {
-            SideBar(navController)
-        },
+        drawerContent = { SideBar(navController) },
         drawerContentColor = MaterialTheme.colors.onSecondary,
         drawerShape = sideBarShape(),
         drawerBackgroundColor = MaterialTheme.colors.background,
@@ -117,11 +113,9 @@ fun TasksScreen(
                     task = task,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {  navController.navigate("mainpage") //TODO: navigate to edit
-                            /* navController.navigate(
-                                Screen.AddEditNoteScreen.route +
-                                        "?taskId=${task.id}&noteColor=${task.color}"
-                            )*/
+                        .clickable {
+                            navController.navigate("addtask")
+                                // Screen.AddEditTaskScreen.route + "?taskId=${task.id}")
                         }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -139,3 +133,4 @@ private fun sideBarShape() =  object : Shape {
         return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
     }
 }
+

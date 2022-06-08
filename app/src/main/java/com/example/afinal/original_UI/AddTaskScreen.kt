@@ -24,7 +24,7 @@ fun AddTaskPage(navController: NavController){
             ) {
                 TextButton(
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                    onClick = {/*TODO*/navController.popBackStack()},
+                    onClick = { navController.popBackStack() },
                     modifier = Modifier
                         .size(100.dp, 60.dp)
                         .absoluteOffset(x = (-5).dp)
@@ -55,7 +55,6 @@ fun AddTaskPage(navController: NavController){
                         style = MaterialTheme.typography.h3
                     )
                 }
-
             }
         }
     ){
@@ -179,6 +178,8 @@ fun AddTaskPage(navController: NavController){
                     )
                 }
             }
+
+            //TODO: 補上
             val selected = remember { mutableStateOf(true) }
             Row(
                 modifier = Modifier

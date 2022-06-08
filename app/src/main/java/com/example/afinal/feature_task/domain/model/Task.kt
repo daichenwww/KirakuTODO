@@ -8,11 +8,11 @@ import com.example.afinal.ui.theme.*
 data class Task(
     @PrimaryKey val id: Int? = null,
     val title: String,
-    val dueDay: Int,
-    val doneDay: Int,
-    val tag: Int,
-    val autoPlan: Boolean,
-    val esTimeCost: String //30 min, 1hr, 2hr...
+    val dueDate: String, //TODO: change back to int (remember to clean database)
+    val doneDate: Int =0,
+    val color: Int, // The content of tag is stored somewhere else and can be redefined.
+    val autoPlan: Boolean = true,
+    val esTimeCost: String ="" //30 min, 1hr, 2hr...
 ) {
     companion object{
         val taskColors = listOf(RedTag, YellowTag, GreenTag, BlueTag, PurpleTag)

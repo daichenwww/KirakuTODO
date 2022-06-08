@@ -26,7 +26,7 @@ fun TaskItem(
     ) {
         Image(
             painter = painterResource(id = R.drawable.tag_blue),
-            contentDescription = null,
+            contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -37,7 +37,7 @@ fun TaskItem(
             overflow = TextOverflow.Ellipsis
         )
 
-        Text(
+        /*Text(
             text = task.esTimeCost,
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,6 +47,6 @@ fun TaskItem(
             textAlign = TextAlign.Right,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
-        )
+        )*/
     }
 }

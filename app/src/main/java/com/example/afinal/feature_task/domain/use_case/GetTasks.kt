@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.map
 
 class GetTasks (private val repository: TaskRepository) {
     operator fun invoke(): Flow<List<Task>> {
-        return repository.getTasks().map { tasks -> tasks.sortedBy { it.dueDay }}
+        return repository.getTasks().map { tasks -> tasks.sortedBy { it.dueDate }}
     }
 }

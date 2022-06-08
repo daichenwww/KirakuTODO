@@ -22,16 +22,6 @@ import androidx.navigation.NavController
 import com.example.afinal.R
 import kotlinx.coroutines.launch
 
-fun sideBarShape() =  object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
-    }
-}
-
 @Composable
 fun MainPage(navController: NavController) {
     val scaffoldState = rememberScaffoldState()
@@ -431,6 +421,16 @@ fun Todos(){ // 如果寫成函式好像沒辦法照hifi的間距拉
         Text(text = "TODO XXXXX", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.secondary)
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = "1hr", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSecondary)
+    }
+}
+
+private fun sideBarShape() =  object : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        return Outline.Rectangle(Rect(0f,0f,500f /* width */, 3000f /* height */))
     }
 }
 
