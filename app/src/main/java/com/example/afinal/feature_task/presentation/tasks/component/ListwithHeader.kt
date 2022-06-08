@@ -67,7 +67,7 @@ fun ListwithHeader(
                         .fillMaxWidth()
                         .clickable {
                             navController.navigate(
-                                Screen.AddEditTaskScreen.route + "?taskId=${task.id}"
+                                Screen.EditTaskScreen.route + "?taskId=${task.id}"
                             )
                         }
                 )

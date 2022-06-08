@@ -70,7 +70,7 @@ fun TasksScreen(
                 },
                 actions = {
                     IconButton(
-                        { navController.navigate(Screen.AddEditTaskScreen.route) }
+                        { navController.navigate(Screen.AddTaskScreen.route) }
                         // TODO: navigate to TODO screen
                     ) {
                         Image(
@@ -90,7 +90,7 @@ fun TasksScreen(
                 backgroundColor = MaterialTheme.colors.onPrimary,
                 contentColor = MaterialTheme.colors.background,
                 modifier = Modifier.size(100.dp),
-                onClick = { navController.navigate(Screen.AddEditTaskScreen.route) }
+                onClick = { navController.navigate(Screen.AddTaskScreen.route) }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

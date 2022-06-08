@@ -8,5 +8,6 @@ sealed class AddEditTaskEvent {
     data class EnteredDueDate(val value: String): AddEditTaskEvent()
     data class ChangeDueDateFocus(val focusState: FocusState): AddEditTaskEvent()
     data class ChangeColor(val color: Int): AddEditTaskEvent()
+    data class DeleteTask(val taskId: Int?): AddEditTaskEvent()
     object SaveTask: AddEditTaskEvent()
 }

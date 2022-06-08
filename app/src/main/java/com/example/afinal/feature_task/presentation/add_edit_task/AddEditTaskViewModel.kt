@@ -37,7 +37,7 @@ class AddEditTaskViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentTaskId: Int? = null
+    var currentTaskId: Int? = null
 
     init {
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
@@ -62,7 +62,6 @@ class AddEditTaskViewModel @Inject constructor(
 
     fun onEvent(event: AddEditTaskEvent) {
         when(event) {
-            //TODO: add delete function
             is AddEditTaskEvent.EnteredTitle -> {
                 _taskTitle.value = taskTitle.value.copy(
                     text = event.value
@@ -87,6 +86,10 @@ class AddEditTaskViewModel @Inject constructor(
             }
             is AddEditTaskEvent.ChangeColor -> {
                 _taskColor.value = event.color
+            }
+            is AddEditTaskEvent.DeleteTask -> {
+                if(event.taskId != null)
+                { viewModelScope.launch { taskUseCases.deleteTask(event.taskId)} }
             }
             is AddEditTaskEvent.SaveTask -> {
                 viewModelScope.launch {

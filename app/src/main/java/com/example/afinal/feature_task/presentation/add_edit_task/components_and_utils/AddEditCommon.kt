@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.presentation.add_edit_task
+package com.example.afinal.feature_task.presentation.add_edit_task.components_and_utils
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.background
@@ -22,31 +22,30 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.feature_task.domain.model.Task
+import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEvent
+import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskViewModel
 import com.example.afinal.feature_task.presentation.util.Screen
-import com.example.afinal.feature_task.presentation.add_edit_task.components.TransparentHintTextField
+import com.example.afinal.feature_task.presentation.add_edit_task.components_and_utils.TransparentHintTextField
+import com.example.afinal.feature_task.presentation.add_edit_task.components_and_utils.light_color_map
 import com.example.afinal.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun AddEditTaskScreen(
+
+fun AddEditCommon(
     navController: NavController,
-    viewModel: AddEditTaskViewModel = hiltViewModel()
+    viewModel: AddEditTaskViewModel = hiltViewModel(),
+    isAddPage: Boolean
 ) {
     val titleState = viewModel.taskTitle.value
     val dueDateState = viewModel.taskDueDate.value
+    val taskId = viewModel.currentTaskId
 
     val scaffoldState = rememberScaffoldState()
-
-    // val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when(event) {
-                is AddEditTaskViewModel.UiEvent.ShowSnackbar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message
-                    )
-                }
                 is AddEditTaskViewModel.UiEvent.SaveTask -> {
                     navController.navigateUp()
                 }
@@ -72,8 +71,8 @@ fun AddEditTaskScreen(
                         style = MaterialTheme.typography.h3
                     )
                 }
-                Text( /*pass parameter to decide edit or add*/
-                    text = "新增任務", // else "編輯任務", //TODO: 要可以變成編輯
+                Text(
+                    text = if(isAddPage) "新增任務" else "編輯任務",
                     style = MaterialTheme.typography.h2,
                     color = MaterialTheme.colors.onPrimary,
                     textAlign = TextAlign.Center,
@@ -96,7 +95,7 @@ fun AddEditTaskScreen(
         },
         scaffoldState = scaffoldState
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth().size(80.dp)
@@ -124,11 +123,10 @@ fun AddEditTaskScreen(
                     textStyle = MaterialTheme.typography.body1
                 )
             }
-            // Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth().size(80.dp)
-                    .padding(start = 20.dp, end = 60.dp),
+                    .padding(start = 20.dp, end = 30.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
@@ -137,6 +135,7 @@ fun AddEditTaskScreen(
                     color = MaterialTheme.colors.onSecondary,
                     style = MaterialTheme.typography.body1
                 )
+                Spacer(modifier = Modifier.width(40.dp))
                 TransparentHintTextField(
                     modifier = Modifier.size(250.dp, 65.dp),
                     text = dueDateState.text,
@@ -151,8 +150,6 @@ fun AddEditTaskScreen(
                     textStyle = MaterialTheme.typography.body1
                 )
             }
-
-            // template color row--------------
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
@@ -169,7 +166,7 @@ fun AddEditTaskScreen(
                             .shadow(15.dp, CircleShape)
                             .clip(CircleShape)
                             .background(
-                                ((if (viewModel.taskColor.value == colorInt) { color } else { dark_color_map[color] })!!)
+                                ((if (viewModel.taskColor.value == colorInt) { color } else { light_color_map[color] })!!)
                             )
                             .clickable {
                                 viewModel.onEvent(AddEditTaskEvent.ChangeColor(colorInt))
@@ -177,9 +174,27 @@ fun AddEditTaskScreen(
                     )
                 }
             }
+            if(!isAddPage) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) { TextButton(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
+                    onClick ={
+                        viewModel.onEvent(AddEditTaskEvent.DeleteTask(taskId))
+                        navController.navigate(Screen.TasksScreen.route)
+                    },
+                    modifier = Modifier.size(100.dp, 60.dp)
+                ) {
+                    Text(
+                        text = "刪除",
+                        color = MaterialTheme.colors.onSecondary,
+                        style = MaterialTheme.typography.h3
+                    )
+                }
+                }
+            }
         }
     }
 }
-
-val dark_color_map  = mapOf(RedTag to LightRedTag, YellowTag to LightYellowTag, GreenTag to LightGreenTag,
-                                BlueTag to LightBlueTag, PurpleTag to LightPurpleTag)

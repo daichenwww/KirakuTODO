@@ -15,6 +15,6 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: Task)
 
-    @Delete
-    suspend fun deleteTask(task: Task)
+    @Query("Delete FROM task WHERE id = :id")
+    suspend fun deleteTask(id: Int)
 }
