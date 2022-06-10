@@ -1,10 +1,9 @@
-package com.example.afinal.feature_task.presentation.add_edit_task.components_and_utils
+package com.example.afinal.feature_task.presentation.add_edit_task.components
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -39,15 +38,16 @@ fun TransparentHintTextField(
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = MaterialTheme.colors.background,
                 textColor = MaterialTheme.colors.onSecondary,
-                focusedIndicatorColor = MaterialTheme.colors.onSecondary,
-                unfocusedIndicatorColor = MaterialTheme.colors.onSecondary
+                cursorColor =  MaterialTheme.colors.onSecondary,
+                focusedIndicatorColor = MaterialTheme.colors.background,
+                unfocusedIndicatorColor = MaterialTheme.colors.background
             )
         )
         if(isHintVisible) {
             Text(
                 text = hint,
                 style = textStyle,
-                modifier = Modifier.padding(top = 15.dp),
+                modifier = Modifier.padding(start = 10.dp, top = 15.dp),
                 color = MaterialTheme.colors.secondary
             )
         }

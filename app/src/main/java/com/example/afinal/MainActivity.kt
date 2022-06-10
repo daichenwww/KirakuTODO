@@ -14,7 +14,7 @@ import androidx.navigation.navArgument
 import com.example.afinal.feature_task.presentation.add_edit_task.AddTaskScreen
 import com.example.afinal.feature_task.presentation.add_edit_task.EditTaskScreen
 import com.example.afinal.feature_task.presentation.tasks.TasksScreen
-import com.example.afinal.feature_task.presentation.util.Screen
+import com.example.afinal.feature_task.presentation.common.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 

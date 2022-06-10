@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.afinal.feature_task.domain.model.InvalidTaskException
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.use_case.TaskUseCases
+import com.example.afinal.feature_task.presentation.common.util.getCurDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -22,14 +23,12 @@ class AddEditTaskViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _taskTitle = mutableStateOf(TextFieldState(
-        hint = "Enter title..."
+        hint = "輸入標題"
     ))
     val taskTitle: State<TextFieldState> = _taskTitle
 
-    private val _taskDueDate = mutableStateOf(TextFieldState(
-        hint = "Enter the due date..."
-    ))
-    val taskDueDate: State<TextFieldState> = _taskDueDate
+    private val _taskDueDate = mutableStateOf(getCurDate())
+    val taskDueDate: State<String> = _taskDueDate
 
     private val _taskColor = mutableStateOf(Task.taskColors.random().toArgb()) //TODO: choose the most frequently used?
     val taskColor: State<Int> = _taskColor
@@ -49,10 +48,7 @@ class AddEditTaskViewModel @Inject constructor(
                             text = task.title,
                             isHintVisible = false
                         )
-                        _taskDueDate.value = _taskDueDate.value.copy(
-                            text = task.dueDate,
-                            isHintVisible = false
-                        )
+                        _taskDueDate.value = task.dueDate
                         _taskColor.value = task.color
                     }
                 }
@@ -73,16 +69,8 @@ class AddEditTaskViewModel @Inject constructor(
                             taskTitle.value.text.isBlank()
                 )
             }
-            is AddEditTaskEvent.EnteredDueDate -> {
-                _taskDueDate.value = _taskDueDate.value.copy(
-                    text = event.value
-                )
-            }
-            is AddEditTaskEvent.ChangeDueDateFocus -> {
-                _taskDueDate.value = _taskDueDate.value.copy(
-                    isHintVisible = !event.focusState.isFocused &&
-                            _taskDueDate.value.text.isBlank()
-                )
+            is AddEditTaskEvent.ChangeDueDate -> {
+                _taskDueDate.value = event.dueDate
             }
             is AddEditTaskEvent.ChangeColor -> {
                 _taskColor.value = event.color
@@ -97,8 +85,7 @@ class AddEditTaskViewModel @Inject constructor(
                         taskUseCases.addTask(
                             Task(
                                 title = taskTitle.value.text,
-                                dueDate = taskDueDate.value.text,
-                                // timestamp = System.currentTimeMillis(),
+                                dueDate = taskDueDate.value, //TODO: update to here
                                 color = taskColor.value,
                                 id = currentTaskId
                             )

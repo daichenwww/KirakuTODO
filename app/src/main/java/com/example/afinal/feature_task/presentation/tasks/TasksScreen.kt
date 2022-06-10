@@ -1,16 +1,11 @@
 package com.example.afinal.feature_task.presentation.tasks
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -20,18 +15,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.afinal.R
-import com.example.afinal.R.drawable
 import com.example.afinal.feature_task.presentation.tasks.component.ListwithHeader
 import com.example.afinal.feature_task.presentation.tasks.component.SideBar
-import com.example.afinal.feature_task.presentation.tasks.component.TaskItem
-import com.example.afinal.feature_task.presentation.util.Screen
-import com.example.afinal.ui.theme.FinalTheme
+import com.example.afinal.feature_task.presentation.common.util.Screen
 import kotlinx.coroutines.launch
 
 @Composable

@@ -11,26 +11,30 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+
 @HiltViewModel
 class TasksViewModel @Inject constructor(
     private val taskUseCases: TaskUseCases
 ) : ViewModel() {
+
     private val _state = mutableStateOf(TasksState())
     val state: State<TasksState> = _state
+
+
 
     private var getTasksJob: Job? = null
 
     init {
         getTasks()
     }
-    // There's no onevent, cause there's no event now.
 
     private fun getTasks() {
         getTasksJob?.cancel()
         getTasksJob = taskUseCases.getTasks()
             .onEach { tasks ->
                 _state.value = state.value.copy(
-                    tasks = tasks
+                    tasks = tasks,
+                    grouped = tasks.groupBy{it.dueDate}
                 )
             }
             .launchIn(viewModelScope)
