@@ -1,5 +1,9 @@
 package com.example.afinal
 
+import AccumulationPage
+import HelpPage
+import SettingPage
+import StampsBookPage
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +32,6 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-//                        startDestination = "mainpage"
                         startDestination = Screen.TasksScreen.route
                     ){
                         composable(route = Screen.TasksScreen.route) { TasksScreen(navController = navController) }
@@ -46,10 +49,10 @@ class MainActivity : ComponentActivity() {
                             )
                         ) { EditTaskScreen(navController = navController) }
 //                        composable("addtask")  { AddTaskPage(navController = navController)}
-//                        composable("setting")  { SettingPage(navController = navController)}
-//                        composable("accumulation")  { AccumulationPage(navController = navController, "1")}
-//                        composable("stampsbook")  { StampsBookPage(navController = navController, "1")}
-//                        composable("help")  { HelpPage(navController = navController)}
+                        composable("setting")  { SettingPage(navController = navController)}
+                        composable("accumulation")  { AccumulationPage(navController = navController, "1")}
+                        composable("stampsbook")  { StampsBookPage(navController = navController, "1")}
+                        composable("help")  { HelpPage(navController = navController)}
                     }
 
                 }
