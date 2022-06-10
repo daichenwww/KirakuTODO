@@ -26,11 +26,11 @@ class TaskRepositoryImpl (
     }
 
     // edited by: zshzzz
-    override suspend fun getDoneTaskNumberInRange(start: String, end: String): Int {
+    override fun getDoneTaskNumberInRange(start: String, end: String): Int {
         return dao.getDoneTaskNumberInRange(start, end)
     }
 
-    override suspend fun getDoneTaskNumber(): Int {
+    override fun getDoneTaskNumber(): Int {
         return dao.getDoneTaskNumber()
     }
 }

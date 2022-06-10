@@ -1,5 +1,7 @@
 package com.example.afinal.common.util
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -9,6 +11,7 @@ import java.util.*
 // If u wanna test any function separately, kotlin playground (a web) is helpful.
 
 // Get current date in specific String pattern. Used in main page, accumulation page.
+@RequiresApi(Build.VERSION_CODES.O) // zshzzz added this line
 fun getCurDate(): String {
     return LocalDate.now((ZoneOffset.ofHours(8))).toString()
     //  = "year-month-day" , which is the form we store in database, and transfer between function.
@@ -17,6 +20,7 @@ fun getCurDate(): String {
 }
 
 // Get month-year (ex. June 2022). Used in mainpage.
+@RequiresApi(Build.VERSION_CODES.O) // zshzzz added this line
 fun getMY(dateStr: String): String {
     val dateLd: LocalDate = LocalDate.parse(dateStr)
     val month: String = dateLd.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
@@ -25,6 +29,7 @@ fun getMY(dateStr: String): String {
 }
 
 // Get corresponding Sunday date for current date. Used in accumulation page.
+@RequiresApi(Build.VERSION_CODES.O) // zshzzz added this line
 fun toSunday(dateStr:String): String{
     val dateLd : LocalDate = LocalDate.parse(dateStr)
     val dayNameInt : Int = dateLd.getDayOfWeek().getValue()
@@ -34,6 +39,7 @@ fun toSunday(dateStr:String): String{
 }
 
 // Get Mon, Tue, ..., Sun from dateStr. Used in mainpage.
+@RequiresApi(Build.VERSION_CODES.O) // zshzzz added this line
 fun getDateName(dateStr:String): String {
     val dow: DayOfWeek = LocalDate.parse(dateStr).dayOfWeek
     return dow.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
@@ -46,12 +52,14 @@ fun getDay(dateStr:String): String {
 }
 
 // 2022-6-9 -> 2022-06-09 (otherwise some library function might failed)
+@RequiresApi(Build.VERSION_CODES.O) // zshzzz added this line
 fun fillZero(dateStr:String):String{
     val dateInt : List<Int> = dateStr.split("-").toList().map { it.toInt() }
     return LocalDate.of(dateInt[0], dateInt[1], dateInt[2]).toString()
 }
 
 // Get shifted day (input + offset, offset can be +, -, or 0). Used in accumulation page
+@RequiresApi(Build.VERSION_CODES.O) // zshzzz added this line
 fun shiftDate(dateStr:String, offset:Long): String{
     val dateLd : LocalDate = LocalDate.parse(dateStr)
     val shiftLd: LocalDate = dateLd.plusDays(offset)

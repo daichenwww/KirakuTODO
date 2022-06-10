@@ -15,7 +15,9 @@ import com.example.afinal.R
 import com.example.afinal.R.drawable
 
 @Composable
-fun AccumulationPage(navController: NavController, weeks: String){
+fun AccumulationPage(navController: NavController,
+                     weeks: String
+){
     Scaffold(
         topBar = {
             TopAppBar(

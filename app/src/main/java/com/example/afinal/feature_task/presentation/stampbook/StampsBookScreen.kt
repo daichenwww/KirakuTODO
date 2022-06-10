@@ -13,7 +13,10 @@ import com.example.afinal.R
 
 
 @Composable
-fun StampsBookPage(navController: NavController, page: String){
+fun StampsBookPage(navController: NavController,
+                   page: String,
+
+){
     Scaffold(
         topBar = {
             TopAppBar(

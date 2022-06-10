@@ -14,7 +14,7 @@ interface TaskRepository {
     suspend fun deleteTask(task: Int)
 
     // edited by: zshzzz
-    suspend fun getDoneTaskNumberInRange(start: String, end: String): Int
+    fun getDoneTaskNumberInRange(start: String, end: String): Int
 
-    suspend fun getDoneTaskNumber(): Int
+    fun getDoneTaskNumber(): Int
 }
