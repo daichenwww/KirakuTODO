@@ -15,6 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    // Directly add new injection here
     @Provides
     @Singleton
     fun provideTaskDatabase(app: Application): TaskDatabase {

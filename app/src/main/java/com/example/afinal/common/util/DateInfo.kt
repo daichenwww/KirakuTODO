@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.presentation.common.util
+package com.example.afinal.common.util
 
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -34,32 +34,26 @@ fun toSunday(dateStr:String): String{
 }
 
 // Get Mon, Tue, ..., Sun from dateStr. Used in mainpage.
-fun getDateName(dateStr: String): String {
+fun getDateName(dateStr:String): String {
     val dow: DayOfWeek = LocalDate.parse(dateStr).dayOfWeek
     return dow.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
     // = one of {"Mon", "Tue", ..., "Sun"}
 }
 
-fun getDay(dateStr: String): String {
+fun getDay(dateStr:String): String {
     val spiltStr = dateStr.split("-").toList()
     return spiltStr[2]
 }
 
-fun fillZero(dateStr: String):String{
+// 2022-6-9 -> 2022-06-09 (otherwise some library function might failed)
+fun fillZero(dateStr:String):String{
     val dateInt : List<Int> = dateStr.split("-").toList().map { it.toInt() }
     return LocalDate.of(dateInt[0], dateInt[1], dateInt[2]).toString()
 }
+
 // Get shifted day (input + offset, offset can be +, -, or 0). Used in accumulation page
-fun shiftDate(dateStr:String, offset:Long):String{
+fun shiftDate(dateStr:String, offset:Long): String{
     val dateLd : LocalDate = LocalDate.parse(dateStr)
     val shiftLd: LocalDate = dateLd.plusDays(offset)
     return shiftLd.toString() // output Date = input Date + offset
 }
-
-
-/* Search in a range
-SELECT *
-  FROM MyTable
-  WHERE [dateColumn] > '3/1/2009' AND [dateColumn] <= DATEADD(day,1,'3/31/2009')
- */
-

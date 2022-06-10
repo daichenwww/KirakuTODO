@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.presentation.add_edit_task
+package com.example.afinal.common
 
 data class TextFieldState(
     val text: String = "",

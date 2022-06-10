@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.feature_task.presentation.tasks.component.ListwithHeader
 import com.example.afinal.feature_task.presentation.tasks.component.SideBar
-import com.example.afinal.feature_task.presentation.common.util.Screen
+import com.example.afinal.common.util.Screen
 import kotlinx.coroutines.launch
 
 @Composable

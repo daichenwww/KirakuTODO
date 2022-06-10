@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.afinal.feature_task.domain.model.Task
 
-@Database(entities = [Task::class], version = 3)
+@Database(entities = [Task::class], version = 5)
 abstract class TaskDatabase: RoomDatabase(){
     abstract val taskDao: TaskDao
     companion object {

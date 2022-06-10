@@ -6,11 +6,14 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.afinal.common.TextFieldState
 import com.example.afinal.feature_task.domain.model.InvalidTaskException
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.use_case.TaskUseCases
-import com.example.afinal.feature_task.presentation.common.util.getCurDate
+import com.example.afinal.common.util.getCurDate
+import com.example.afinal.feature_task.presentation.tasks.TasksState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -22,16 +25,32 @@ class AddEditTaskViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _taskTitle = mutableStateOf(TextFieldState(
-        hint = "輸入標題"
-    ))
+    private val _taskTitle = mutableStateOf(
+        TextFieldState(hint = "輸入標題")
+    )
     val taskTitle: State<TextFieldState> = _taskTitle
 
     private val _taskDueDate = mutableStateOf(getCurDate())
     val taskDueDate: State<String> = _taskDueDate
 
-    private val _taskColor = mutableStateOf(Task.taskColors.random().toArgb()) //TODO: choose the most frequently used?
+    //TODO: choose the most frequently used?
+    private val _taskColor = mutableStateOf(Task.taskColors.random().toArgb())
     val taskColor: State<Int> = _taskColor
+
+    private val _taskPlan = mutableStateOf(true)
+    val taskPlan: State<Boolean> = _taskPlan
+
+    private val _taskDone = mutableStateOf(false)
+    val taskDone: State<Boolean> = _taskDone
+
+    // TODO: choose the average value for that type
+    // But if there's no tag, this is meaningless. We only have color now.
+    // average of all task?
+    private val _taskEsTime = mutableStateOf(1)
+    val taskEsTime: State<Int> = _taskEsTime
+
+    private val _taskPlanDate = mutableStateOf(getCurDate())
+    val taskPlanDate: State<String> = _taskPlanDate
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -50,6 +69,9 @@ class AddEditTaskViewModel @Inject constructor(
                         )
                         _taskDueDate.value = task.dueDate
                         _taskColor.value = task.color
+                        _taskPlan.value = task.autoPlan
+                        _taskPlanDate.value = task.planDate
+                        _taskDone.value = task.done
                     }
                 }
             }
@@ -75,6 +97,15 @@ class AddEditTaskViewModel @Inject constructor(
             is AddEditTaskEvent.ChangeColor -> {
                 _taskColor.value = event.color
             }
+            is AddEditTaskEvent.ChangeAutoPlan -> {
+                _taskPlan.value = event.autoPlan
+            }
+            is AddEditTaskEvent.ChangePlanDate -> {
+                _taskPlanDate.value = event.planDate
+            }
+            is AddEditTaskEvent.ChangeEsTime -> {
+                _taskEsTime.value = event.esTime
+            }
             is AddEditTaskEvent.DeleteTask -> {
                 if(event.taskId != null)
                 { viewModelScope.launch { taskUseCases.deleteTask(event.taskId)} }
@@ -85,9 +116,13 @@ class AddEditTaskViewModel @Inject constructor(
                         taskUseCases.addTask(
                             Task(
                                 title = taskTitle.value.text,
-                                dueDate = taskDueDate.value, //TODO: update to here
+                                dueDate = taskDueDate.value,
                                 color = taskColor.value,
-                                id = currentTaskId
+                                id = currentTaskId,
+                                autoPlan = taskPlan.value,
+                                planDate = taskPlanDate.value,
+                                esTimeCost = taskEsTime.value,
+                                done = taskDone.value
                             )
                         )
                         _eventFlow.emit(UiEvent.SaveTask)

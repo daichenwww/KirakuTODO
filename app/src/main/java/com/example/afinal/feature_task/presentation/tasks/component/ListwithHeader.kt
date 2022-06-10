@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.feature_task.presentation.tasks.TasksState
-import com.example.afinal.feature_task.presentation.common.util.Screen
-import com.example.afinal.feature_task.presentation.common.util.getDateName
-import com.example.afinal.feature_task.presentation.common.util.getDay
+import com.example.afinal.common.util.Screen
+import com.example.afinal.common.util.getDateName
+import com.example.afinal.common.util.getDay
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -68,7 +68,7 @@ fun ListwithHeader(
             }
             items(items = sectionTasks) { task ->
                 TaskItem(
-                    task = task,  //stickHeader?
+                    task = task,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {

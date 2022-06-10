@@ -20,8 +20,6 @@ class TasksViewModel @Inject constructor(
     private val _state = mutableStateOf(TasksState())
     val state: State<TasksState> = _state
 
-
-
     private var getTasksJob: Job? = null
 
     init {
@@ -35,6 +33,8 @@ class TasksViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     tasks = tasks,
                     grouped = tasks.groupBy{it.dueDate}
+
+                //Find first item s.t. dateStr >= curDateStr
                 )
             }
             .launchIn(viewModelScope)

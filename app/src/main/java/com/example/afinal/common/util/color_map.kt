@@ -1,6 +1,5 @@
-package com.example.afinal.feature_task.presentation.common.util
+package com.example.afinal.common.util
 
-import androidx.compose.ui.graphics.Color
 import com.example.afinal.R
 import com.example.afinal.ui.theme.*
 
