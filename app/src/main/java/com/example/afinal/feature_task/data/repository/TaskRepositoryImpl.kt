@@ -24,4 +24,13 @@ class TaskRepositoryImpl (
     override suspend fun deleteTask(task: Int) {
         dao.deleteTask(task)
     }
+
+    // edited by: zshzzz
+    override suspend fun getDoneTaskNumberInRange(start: String, end: String): Int {
+        return dao.getDoneTaskNumberInRange(start, end)
+    }
+
+    override suspend fun getDoneTaskNumber(): Int {
+        return dao.getDoneTaskNumber()
+    }
 }

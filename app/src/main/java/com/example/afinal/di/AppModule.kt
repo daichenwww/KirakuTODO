@@ -39,7 +39,10 @@ object AppModule {
             getTasks = GetTasks(repository),
             deleteTask = DeleteTask(repository),
             addTask = AddTask(repository),
-            getTask = GetTask(repository)
+            getTask = GetTask(repository),
+            // edited by: zshzzz
+            getDoneTaskNumber = GetDoneTaskNumber(repository),
+            getDoneTaskNumberInRange = GetDoneTaskNumberInRange(repository),
         )
     }
 }
