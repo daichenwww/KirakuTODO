@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.toArgb
@@ -26,15 +28,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColor
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
+import com.example.afinal.common.util.*
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEvent
 import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskViewModel
-import com.example.afinal.common.util.Screen
-import com.example.afinal.common.util.fillZero
-import com.example.afinal.common.util.mapToLightColor
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
@@ -48,71 +50,41 @@ fun AddEditCommon(
     val titleState = viewModel.taskTitle.value
     val dueDateState = viewModel.taskDueDate.value
     val planDateState = viewModel.taskPlanDate.value
-    val autoPlan = remember { mutableStateOf(viewModel.taskPlan.value) }
-    val sliderPos = remember { mutableStateOf(viewModel.taskEsTime.value.toFloat()) }
 
     val taskId = viewModel.currentTaskId
 
+    // for date picker
     val dDate = remember {mutableStateOf(dueDateState)}
     val pDate = remember {mutableStateOf(planDateState)}
 
     val mContext = LocalContext.current
 
-    // for dueDatePicker
-    val dYear: Int
-    val dMonth: Int
-    val dDay: Int
+    val dDateInt: List<Int> = getDateInt(viewModel.taskDueDate.value)
 
-    val dCalendar = Calendar.getInstance()
-
-    if(isAddPage){
-        dYear = dCalendar.get(Calendar.YEAR)
-        dMonth = dCalendar.get(Calendar.MONTH)
-        dDay = dCalendar.get(Calendar.DAY_OF_MONTH)
-    }
-    else {
-        dDate.value = dueDateState //dateStr
-        val dayInt: List<Int> = dueDateState.split("-").toList().map { it.toInt() }
-        dYear = dayInt[0]
-        dMonth = dayInt[1]-1
-        dDay = dayInt[2]
-    }
-
-    dCalendar.time = Date()
+    // When it's AddPage, the DueDate now is current date. Else it's DueDate of the task.
+    val dYear = dDateInt[0]
+    val dMonth = dDateInt[1]-1
+    val dDay = dDateInt[2]
 
     val dDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, dYear: Int, dMonth: Int, dDayOfMonth: Int ->
             dDate.value = "$dYear-${dMonth+1}-$dDayOfMonth"
+            viewModel.onEvent(AddEditTaskEvent.ChangeDueDate(fillZero(dDate.value)))
         }, dYear, dMonth, dDay
     )
 
-    // for planDatePicker
-    val pYear: Int
-    val pMonth: Int
-    val pDay: Int
+    val pDateInt: List<Int> = getDateInt(viewModel.taskPlanDate.value)
 
-    val pCalendar = Calendar.getInstance()
-
-    if(isAddPage){
-        pYear = pCalendar.get(Calendar.YEAR)
-        pMonth = pCalendar.get(Calendar.MONTH)
-        pDay = pCalendar.get(Calendar.DAY_OF_MONTH)
-    }
-    else {
-        pDate.value = planDateState
-        val dayInt: List<Int> = planDateState.split("-").toList().map { it.toInt() }
-        pYear = dayInt[0]
-        pMonth = dayInt[1]-1
-        pDay = dayInt[2]
-    }
-
-    pCalendar.time = Date()
+    val pYear = pDateInt[0]
+    val pMonth = pDateInt[1]-1
+    val pDay = pDateInt[2]
 
     val pDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, pYear: Int, pMonth: Int, pDayOfMonth: Int ->
             pDate.value = "$pYear-${pMonth+1}-$pDayOfMonth"
+            viewModel.onEvent(AddEditTaskEvent.ChangePlanDate(fillZero(pDate.value)))
         }, pYear, pMonth, pDay
     )
 
@@ -163,8 +135,8 @@ fun AddEditCommon(
                 TextButton(
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
                     onClick = {
-                        viewModel.onEvent(AddEditTaskEvent.ChangeDueDate(fillZero(dDate.value)))
-                        viewModel.onEvent(AddEditTaskEvent.ChangePlanDate(fillZero(pDate.value)))
+                        /*viewModel.onEvent(AddEditTaskEvent.ChangeDueDate(fillZero(dDate.value)))
+                        viewModel.onEvent(AddEditTaskEvent.ChangePlanDate(fillZero(pDate.value)))*/
                         viewModel.onEvent(AddEditTaskEvent.SaveTask) },
                     modifier = Modifier
                         .size(100.dp, 60.dp)
@@ -180,13 +152,7 @@ fun AddEditCommon(
         },
         scaffoldState = scaffoldState
     ) {
-
         Column{
-            /*Text(
-                text = "autoPlan = " + autoPlan.toString() + ", sliderPos = " + sliderPos.toString(),
-                color = MaterialTheme.colors.onSecondary,
-                style = MaterialTheme.typography.body1
-            )*/
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,7 +204,7 @@ fun AddEditCommon(
                     ),
                 ){
                     Text(
-                        text = fillZero(dDate.value),
+                        text = viewModel.taskDueDate.value,
                         modifier = Modifier.size(200.dp),
                         textAlign = TextAlign.Left,
                         color = MaterialTheme.colors.onSecondary,
@@ -263,7 +229,7 @@ fun AddEditCommon(
                             .shadow(15.dp, CircleShape)
                             .clip(CircleShape)
                             .background(((if (viewModel.taskColor.value == colorInt) { color }
-                                  else { mapToLightColor[color] })!!))
+                            else { mapToLightColor[color] })!!))
                             .clickable { viewModel.onEvent(AddEditTaskEvent.ChangeColor(colorInt)) }
                     )
                 }
@@ -283,18 +249,17 @@ fun AddEditCommon(
                     style = MaterialTheme.typography.body1
                 )
                 IconButton(onClick = {
-                    autoPlan.value = !(autoPlan.value)
-                    viewModel.onEvent(AddEditTaskEvent.ChangeAutoPlan(autoPlan.value))
+                    viewModel.onEvent(AddEditTaskEvent.ChangeAutoPlan(!viewModel.taskPlan.value))
                 }) {
                     Image(
-                        painter =   if (autoPlan.value) painterResource(id = R.drawable.swon)
-                                    else painterResource(id = R.drawable.swoff),
+                        painter =   if (viewModel.taskPlan.value) painterResource(id = R.drawable.swon)
+                        else painterResource(id = R.drawable.swoff),
                         contentDescription = null,
                         modifier = Modifier.size(65.dp)
                     )
                 }
             }
-            if (autoPlan.value){
+            if (viewModel.taskPlan.value){
                 Row(
                     modifier = Modifier
                         .fillMaxWidth().size(80.dp)
@@ -310,15 +275,14 @@ fun AddEditCommon(
                     Column(modifier = Modifier.padding(start = 50.dp, end = 10.dp, top = 20.dp))
                     {
                         Text(
-                            text = sliderPos.value.toInt().toString() + "hr",
+                            text = viewModel.taskEsTime.value.toString() + "hr",
                             color = MaterialTheme.colors.onSecondary,
                             style = MaterialTheme.typography.body1
                         )
                         Slider(
-                            value = sliderPos.value,
-                            onValueChange = {
-                                sliderPos.value = it
-                                viewModel.onEvent(AddEditTaskEvent.ChangeEsTime((sliderPos.value).toInt())) },
+                            value = viewModel.taskEsTime.value.toFloat(),
+                            onValueChange = { pos ->
+                                viewModel.onEvent(AddEditTaskEvent.ChangeEsTime((pos).toInt())) },
                             steps = 7,
                             valueRange = 0f..8f,
                             colors = SliderDefaults.colors(
@@ -358,7 +322,7 @@ fun AddEditCommon(
                         ),
                     ){
                         Text(
-                            text = fillZero(pDate.value),
+                            text = viewModel.taskPlanDate.value,
                             modifier = Modifier.size(200.dp),
                             textAlign = TextAlign.Left,
                             color = MaterialTheme.colors.onSecondary,

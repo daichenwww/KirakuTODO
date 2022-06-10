@@ -43,9 +43,7 @@ class AddEditTaskViewModel @Inject constructor(
     private val _taskDone = mutableStateOf(false)
     val taskDone: State<Boolean> = _taskDone
 
-    // TODO: choose the average value for that type
-    // But if there's no tag, this is meaningless. We only have color now.
-    // average of all task?
+    // TODO: choose the average value for all data
     private val _taskEsTime = mutableStateOf(1)
     val taskEsTime: State<Int> = _taskEsTime
 
@@ -71,6 +69,7 @@ class AddEditTaskViewModel @Inject constructor(
                         _taskColor.value = task.color
                         _taskPlan.value = task.autoPlan
                         _taskPlanDate.value = task.planDate
+                        _taskEsTime.value = task.esTimeCost
                         _taskDone.value = task.done
                     }
                 }

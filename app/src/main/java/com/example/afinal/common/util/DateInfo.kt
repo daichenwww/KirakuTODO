@@ -24,6 +24,11 @@ fun getMY(dateStr: String): String {
     return month + " " + year
 }
 
+// Transform dateStr into List<Int>
+fun getDateInt(dateStr: String): List<Int> {
+    return  dateStr.split("-").toList().map { it.toInt() }
+}
+
 // Get corresponding Sunday date for current date. Used in accumulation page.
 fun toSunday(dateStr:String): String{
     val dateLd : LocalDate = LocalDate.parse(dateStr)

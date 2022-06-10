@@ -51,7 +51,7 @@ fun TaskItem(
             )
         }
 
-        if(task.autoPlan == true) {
+        if(task.autoPlan) {
             Text(
                 text = task.esTimeCost.toString() + " hr",
                 modifier = Modifier

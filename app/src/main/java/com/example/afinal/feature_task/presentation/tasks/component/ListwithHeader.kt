@@ -33,7 +33,10 @@ fun ListwithHeader(
         // TODO: add stamp
         state.grouped.forEach { (section, sectionTasks) ->
             stickyHeader {
-                Card(backgroundColor = MaterialTheme.colors.background, elevation = 0.dp)
+                Card(backgroundColor = MaterialTheme.colors.background,
+                    elevation = 0.dp,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(

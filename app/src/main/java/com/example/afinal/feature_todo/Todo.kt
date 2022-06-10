@@ -1,6 +1,5 @@
 package com.example.afinal.feature_todo
 
-// TODO: Create database, repository for Todo
 data class Todo(
     var title: String,
     var planDay: Int,

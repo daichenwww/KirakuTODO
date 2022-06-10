@@ -10,5 +10,5 @@ fun AddTaskScreen(
     navController: NavController,
     viewModel: AddEditTaskViewModel = hiltViewModel()
 ) {
-    AddEditCommon(navController, viewModel,isAddPage = true)
+    AddEditCommon(navController, viewModel, isAddPage = true)
 }
