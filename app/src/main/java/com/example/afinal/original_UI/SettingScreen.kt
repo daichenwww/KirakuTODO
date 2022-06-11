@@ -48,7 +48,7 @@ fun SettingPage(navController: NavController){
             Setting("提醒", "上午 09:00, 下午 18:00", true, true)
             Setting("字體大小", "中", false, false)
             Setting("深色模式", "", true, false)
-            Setting("邀請碼", "197498327085", false, false)
+            // Setting("邀請碼", "197498327085", false, false)
         }
     }
 }

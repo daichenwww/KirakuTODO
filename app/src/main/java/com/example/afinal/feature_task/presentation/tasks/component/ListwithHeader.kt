@@ -55,8 +55,9 @@ fun ListwithHeader(
                         } //TODO: update stamp
                         Spacer(modifier = Modifier.width(8.dp))
                         Image(
-                            painter = painterResource(id = R.drawable.s_000),
-                            contentDescription = null
+                            painter = painterResource(id = R.drawable.stamp_000),
+                            contentDescription = null,
+                            modifier = Modifier.size(60.dp, 45.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Image(
