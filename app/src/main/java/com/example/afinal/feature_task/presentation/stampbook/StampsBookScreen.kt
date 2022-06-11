@@ -8,15 +8,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
+import com.example.afinal.feature_task.presentation.stampbook.StampBookViewModel
 
 
 @Composable
 fun StampsBookPage(navController: NavController,
-                   page: String,
-
+                   viewModel: StampBookViewModel = hiltViewModel()
 ){
+    val doneTaskNum = viewModel.doneTaskNum
+    val page = "1"
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,24 +75,24 @@ fun StampsBookPage(navController: NavController,
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Meow("000", false, "XXXXXXX")
-                            Meow("001", false, "XXXXXXX")
+                            Meow("000", false, "Kiraku TODO!")
+                            Meow("001", false, "Finish 1 todo")
                         }
                         Row(
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Meow("002", false, "XXXXXXX")
+                            Meow("002", false, "Finish 5 todo")
                             //Spacer(modifier = Modifier.width(10.dp))
-                            Meow("003", false, "XXXXXXX")
+                            Meow("003", false, "Finish 10 todo")
                         }
                         Row(
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Meow("004", false, "XXXXXXX")
+                            Meow("004", false, "Finish 15 todo")
                             //Spacer(modifier = Modifier.width(10.dp))
-                            Meow("005", true, "XXXXXXX")
+                            Meow("005", true, "Finish 20 todo")
                         }
                         Row(
                             modifier = Modifier
@@ -98,6 +101,7 @@ fun StampsBookPage(navController: NavController,
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            // navigate to next page
                             IconButton(onClick = { /*TODO*/ }) {
                                 if (true){
                                     Image(
@@ -158,7 +162,7 @@ fun StampsBookPage(navController: NavController,
                 ) {
                     Button( shape = RoundedCornerShape(30.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
-                        onClick = { /*TODO*/ }
+                        onClick = { /*TODO*/ } // navigate to 說明頁面
                     ) {
                         Text(
                             text = "說明",

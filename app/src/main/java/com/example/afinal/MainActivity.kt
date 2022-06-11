@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
 //                        composable("addtask")  { AddTaskPage(navController = navController)}
                         composable("setting")  { SettingPage(navController = navController)}
                         composable("accumulation")  { AccumulationPage(navController = navController, "1")}
-                        composable("stampsbook")  { StampsBookPage(navController = navController, "1")}
+                        composable("stampsbook")  { StampsBookPage(navController = navController)}
                         composable("help")  { HelpPage(navController = navController)}
                     }
 

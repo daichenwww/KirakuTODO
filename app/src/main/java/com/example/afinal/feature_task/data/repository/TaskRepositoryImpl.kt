@@ -1,5 +1,6 @@
 package com.example.afinal.feature_task.data.repository
 
+import android.util.Log
 import com.example.afinal.feature_task.data.datasource.TaskDao
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.repository.TaskRepository
@@ -26,11 +27,12 @@ class TaskRepositoryImpl (
     }
 
     // edited by: zshzzz
-    override fun getDoneTaskNumberInRange(start: String, end: String): Int {
+    override suspend fun getDoneTaskNumberInRange(start: String, end: String): Int {
         return dao.getDoneTaskNumberInRange(start, end)
     }
 
-    override fun getDoneTaskNumber(): Int {
+    override suspend fun getDoneTaskNumber(): Int {
+        Log.v("RepoImpl", "getDoneTaskNumber=" + dao.getDoneTaskNumber());
         return dao.getDoneTaskNumber()
     }
 }

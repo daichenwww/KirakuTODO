@@ -12,6 +12,8 @@ class AccumulationViewModel @Inject constructor(
     private val taskUseCases: TaskUseCases
 ) : ViewModel() {
     // Get dates
+    /*
+
     private val _CurDate = getCurDate()
     val CurDate = _CurDate
 
@@ -40,4 +42,5 @@ class AccumulationViewModel @Inject constructor(
     private val _DoneTaskNumIn28 = taskUseCases.getDoneTaskNumberInRange(_CurDate, _CurDateShift28)
     val DoneTaskNumIn28 = _DoneTaskNumIn28
 
+     */
 }

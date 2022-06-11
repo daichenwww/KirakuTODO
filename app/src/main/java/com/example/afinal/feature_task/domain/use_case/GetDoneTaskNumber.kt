@@ -1,10 +1,11 @@
 // edited by: zshzzz
 package com.example.afinal.feature_task.domain.use_case
 
+import android.util.Log
 import com.example.afinal.feature_task.domain.repository.TaskRepository
 
 class GetDoneTaskNumber (private val repository: TaskRepository){
-    operator fun invoke(): Int {
+    suspend operator fun invoke(): Int {
         return repository.getDoneTaskNumber()
     }
 }
