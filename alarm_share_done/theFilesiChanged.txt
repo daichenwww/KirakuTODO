@@ -1,0 +1,10 @@
+送出圖片與文字
+更改或新增：files_paths.xml、AndroidManifest.xml、accumulate_share.png、AccumulationScreen.kt、StampsBooksScreen.kt
+
+通知
+更改或新增：Notification.kt，AndroidManifest.xml，MainActivity.kt
+
+完成、取消完成
+更改：build.gradle、TaskItem.kt、
+更改：package：done_cancel_task、DoneTaskEvent、DoneTaskViewModel
+

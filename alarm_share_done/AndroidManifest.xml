@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.afinal">
+
+    <application
+        android:name=".TodoAPP"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Final"
+        tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/files_paths" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Final">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- owo -->
+        <receiver
+            android:name=".Notification"
+            android:enabled="true"
+            android:exported="true" />
+        <provider
+            android:authorities="com.technifysoft.shareimagetextkotlin.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/files_paths"/>
+        </provider><!--owo-->
+    </application>
+
+</manifest>
