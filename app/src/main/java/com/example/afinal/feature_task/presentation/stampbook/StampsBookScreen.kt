@@ -19,7 +19,7 @@ fun StampsBookPage(navController: NavController,
                    viewModel: StampBookViewModel = hiltViewModel()
 ){
     val doneTaskNum = viewModel.doneTaskNum
-    val page = "1"
+    val page = viewModel.page
     Scaffold(
         topBar = {
             TopAppBar(
@@ -75,8 +75,16 @@ fun StampsBookPage(navController: NavController,
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Meow("000", false, "Kiraku TODO!")
-                            Meow("001", false, "Finish 1 todo")
+                            when(page){
+                                "1"->{
+                                    Meow("000", false, "Kiraku TODO!")
+                                    Meow("001", false, "Finish 1 todo")
+                                }
+                                else ->{
+                                    Meow("006", false, "Kiraku TODO!")
+                                    Meow("007", false, "Finish 1 todo")
+                                }
+                            }
                         }
                         Row(
                             modifier = Modifier.fillMaxWidth(0.75f),
@@ -102,8 +110,8 @@ fun StampsBookPage(navController: NavController,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             // navigate to next page
-                            IconButton(onClick = { /*TODO*/ }) {
-                                if (true){
+                            IconButton(onClick = { viewModel.prevPage() }) {
+                                if (page > "1"){
                                     Image(
                                         painter = painterResource(id = R.drawable.last_no),
                                         contentDescription = null,
@@ -132,7 +140,7 @@ fun StampsBookPage(navController: NavController,
                                 color = MaterialTheme.colors.onSecondary
                             )
                             IconButton(onClick = { /*TODO*/ }) {
-                                if (true){
+                                if (page < "3"){
                                     Image(
                                         painter = painterResource(id = R.drawable.next),
                                         contentDescription = null,
@@ -218,11 +226,78 @@ fun Meow(number: String, locked: Boolean, unlockedCondition: String, /*image: ?*
                         modifier = Modifier.size(140.dp, 90.dp)
                 )}
                 "004"-> {
-                Image(
-                    painter = painterResource(id = R.drawable.stamp_004),
-                    contentDescription = null,
-                    modifier = Modifier.size(140.dp, 90.dp)
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_004),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
                 )}
+                "005"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_005),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "006"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_006),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "007"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_007),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "008"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_008),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "009"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_009),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "010"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_010),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "012"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_012),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "013"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_013),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "014"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_014),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                "015"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_015),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )}
+                else ->{
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_undefined),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )
+                }
             }
         }
         else Image(

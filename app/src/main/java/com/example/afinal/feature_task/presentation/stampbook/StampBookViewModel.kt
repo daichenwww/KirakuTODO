@@ -16,13 +16,25 @@ class StampBookViewModel @Inject constructor(
 
     private var _doneTaskNum = 0
 
-
     var doneTaskNum = 0
     var page = ""
     init {
         _doneTaskNum = myFunction()
         doneTaskNum = _doneTaskNum
-        page = mutableStateOf(StampBookState()).toString()
+        page = "1"
+    }
+
+    fun nextPage(){
+        if(page.toInt() < 3){
+            val newPage = page.toInt() + 1
+            page = newPage.toString()
+        }
+    }
+    fun prevPage(){
+        if(page.toInt() > 1){
+            val newPage = page.toInt() - 1
+            page = newPage.toString()
+        }
     }
 
     fun myFunction(): Int = runBlocking {
