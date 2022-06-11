@@ -9,7 +9,7 @@ interface TaskRepository {
 
     suspend fun getTaskById(id: Int): Task?
 
-    suspend fun insertTask(task: Task)
+    suspend fun insertTask(task: Task): Long
 
     suspend fun deleteTask(task: Int)
 

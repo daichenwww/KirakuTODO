@@ -17,11 +17,12 @@ class TaskRepositoryImpl (
         return dao.getTaskById(id)
     }
 
-    override suspend fun insertTask(task: Task) {
-        dao.insertTask(task)
+    override suspend fun insertTask(task: Task): Long {
+        return dao.insertTask(task)
     }
 
     override suspend fun deleteTask(task: Int) {
         dao.deleteTask(task)
     }
+
 }

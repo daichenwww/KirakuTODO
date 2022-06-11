@@ -13,8 +13,10 @@ interface TaskDao {
     suspend fun getTaskById(id: Int): Task?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(task: Task)
+//    @Query("SELECT LAST_INSERT_ID()")
+    suspend fun insertTask(task: Task): Long
 
     @Query("Delete FROM task WHERE id = :id")
     suspend fun deleteTask(id: Int)
+
 }

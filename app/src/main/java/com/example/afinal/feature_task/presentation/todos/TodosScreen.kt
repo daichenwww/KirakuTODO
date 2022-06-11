@@ -1,6 +1,5 @@
-package com.example.afinal.feature_task.presentation.tasks
+package com.example.afinal.feature_task.presentation.todos
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -20,16 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
-import com.example.afinal.feature_task.presentation.tasks.component.ListwithHeader
 import com.example.afinal.feature_task.presentation.tasks.component.SideBar
-import com.example.afinal.common.util.Screen
+import com.example.afinal.feature_task.presentation.todos.component.ListwithHeader
 import kotlinx.coroutines.launch
-
+import com.example.afinal.common.util.Screen
 
 @Composable
-fun TasksScreen(
+fun TodosScreen(
     navController: NavController,
-    viewModel: TasksViewModel = hiltViewModel()
+    viewModel: TodosViewModel = hiltViewModel()
 ){
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
@@ -62,11 +60,10 @@ fun TasksScreen(
                 },
                 actions = {
                     IconButton(
-                        { navController.navigate(Screen.TodosScreen.route) }
-                        // TODO: navigate to TODO screen
+                        { navController.navigate(Screen.TasksScreen.route) }
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_modetodo),
+                            painter = painterResource(id = R.drawable.ic_modedeadline),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(40.dp)

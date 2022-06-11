@@ -1,21 +1,26 @@
-package com.example.afinal.feature_task.presentation.add_edit_task.components
+package com.example.afinal.feature_task.presentation.add_edit_todo.components
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.toArgb
@@ -23,30 +28,33 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColor
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
-import com.example.afinal.common.util.Screen
-import com.example.afinal.common.util.fillZero
-import com.example.afinal.common.util.getDateInt
-import com.example.afinal.common.util.mapToLightColor
+import com.example.afinal.common.util.*
 import com.example.afinal.feature_task.domain.model.Task
-import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEvent
-import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskViewModel
+import com.example.afinal.feature_task.domain.model.Task.Companion.taskColors
+import com.example.afinal.feature_task.domain.model.Todo
+import com.example.afinal.feature_task.presentation.add_edit_task.components.TransparentHintTextField
+import com.example.afinal.feature_task.presentation.add_edit_todo.AddEditTodoEvent
+import com.example.afinal.feature_task.presentation.add_edit_todo.AddEditTodoViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.flow.collectLatest
+import java.util.*
 
 @Composable
 
 fun AddEditCommon(
     navController: NavController,
-    viewModel: AddEditTaskViewModel = hiltViewModel(),
+    viewModel: AddEditTodoViewModel = hiltViewModel(),
     isAddPage: Boolean
 ) {
-    val titleState = viewModel.taskTitle.value
-    val dueDateState = viewModel.taskDueDate.value
-    val planDateState = viewModel.taskPlanDate.value
+    val titleState = viewModel.todoTitle.value
+    val dueDateState = viewModel.todoDueDate.value
+    val planDateState = viewModel.todoPlanDate.value
 
-    val taskId = viewModel.currentTaskId
+    val todoId = viewModel.currentTodoId
 
     // for date picker
     val dDate = remember {mutableStateOf(dueDateState)}
@@ -54,7 +62,7 @@ fun AddEditCommon(
 
     val mContext = LocalContext.current
 
-    val dDateInt: List<Int> = getDateInt(viewModel.taskDueDate.value)
+    val dDateInt: List<Int> = getDateInt(viewModel.todoDueDate.value)
 
     // When it's AddPage, the DueDate now is current date. Else it's DueDate of the task.
     val dYear = dDateInt[0]
@@ -65,11 +73,11 @@ fun AddEditCommon(
         mContext,
         { _: DatePicker, dYear: Int, dMonth: Int, dDayOfMonth: Int ->
             dDate.value = "$dYear-${dMonth+1}-$dDayOfMonth"
-            viewModel.onEvent(AddEditTaskEvent.ChangeDueDate(fillZero(dDate.value)))
+            viewModel.onEvent(AddEditTodoEvent.ChangeDueDate(fillZero(dDate.value)))
         }, dYear, dMonth, dDay
     )
 
-    val pDateInt: List<Int> = getDateInt(viewModel.taskPlanDate.value)
+    val pDateInt: List<Int> = getDateInt(viewModel.todoPlanDate.value)
 
     val pYear = pDateInt[0]
     val pMonth = pDateInt[1]-1
@@ -79,7 +87,7 @@ fun AddEditCommon(
         mContext,
         { _: DatePicker, pYear: Int, pMonth: Int, pDayOfMonth: Int ->
             pDate.value = "$pYear-${pMonth+1}-$pDayOfMonth"
-            viewModel.onEvent(AddEditTaskEvent.ChangePlanDate(fillZero(pDate.value)))
+            viewModel.onEvent(AddEditTodoEvent.ChangePlanDate(fillZero(pDate.value)))
         }, pYear, pMonth, pDay
     )
 
@@ -88,10 +96,10 @@ fun AddEditCommon(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when(event) {
-                is AddEditTaskViewModel.UiEvent.SaveTask -> {
+                is AddEditTodoViewModel.UiEvent.SaveTodo -> {
                     navController.navigateUp()
                 }
-                is AddEditTaskViewModel.UiEvent.ShowSnackbar -> {
+                is AddEditTodoViewModel.UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message
                     )
@@ -109,7 +117,7 @@ fun AddEditCommon(
             ) {
                 TextButton(
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                    onClick = { navController.navigateUp() },
+                    onClick = { navController.navigate(Screen.TodosScreen.route) },
                     modifier = Modifier
                         .size(100.dp, 60.dp)
                         .absoluteOffset(x = (-5).dp)
@@ -121,7 +129,7 @@ fun AddEditCommon(
                     )
                 }
                 Text(
-                    text = if(isAddPage) "新增任務" else "編輯任務",
+                    text = if(isAddPage) "新增Todo" else "編輯Todo",
                     style = MaterialTheme.typography.h2,
                     color = MaterialTheme.colors.onPrimary,
                     textAlign = TextAlign.Center,
@@ -132,7 +140,7 @@ fun AddEditCommon(
                     onClick = {
                         /*viewModel.onEvent(AddEditTaskEvent.ChangeDueDate(fillZero(dDate.value)))
                         viewModel.onEvent(AddEditTaskEvent.ChangePlanDate(fillZero(pDate.value)))*/
-                        viewModel.onEvent(AddEditTaskEvent.SaveTask) },
+                        viewModel.onEvent(AddEditTodoEvent.SaveTodo) },
                     modifier = Modifier
                         .size(100.dp, 60.dp)
                         .absoluteOffset(x = (5).dp)
@@ -165,8 +173,8 @@ fun AddEditCommon(
                     modifier = Modifier.size(250.dp, 65.dp),
                     text = titleState.text,
                     hint = titleState.hint,
-                    onValueChange = { viewModel.onEvent(AddEditTaskEvent.EnteredTitle(it)) },
-                    onFocusChange = { viewModel.onEvent(AddEditTaskEvent.ChangeTitleFocus(it)) },
+                    onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredTitle(it)) },
+                    onFocusChange = { viewModel.onEvent(AddEditTodoEvent.ChangeTitleFocus(it)) },
                     isHintVisible = titleState.isHintVisible,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.body1
@@ -199,7 +207,7 @@ fun AddEditCommon(
                     ),
                 ){
                     Text(
-                        text = viewModel.taskDueDate.value,
+                        text = viewModel.todoDueDate.value,
                         modifier = Modifier.size(200.dp),
                         textAlign = TextAlign.Left,
                         color = MaterialTheme.colors.onSecondary,
@@ -223,9 +231,9 @@ fun AddEditCommon(
                             .size(50.dp)
                             .shadow(15.dp, CircleShape)
                             .clip(CircleShape)
-                            .background(((if (viewModel.taskColor.value == colorInt) { color }
+                            .background(((if (viewModel.todoColor.value == colorInt) { color }
                             else { mapToLightColor[color] })!!))
-                            .clickable { viewModel.onEvent(AddEditTaskEvent.ChangeColor(colorInt)) }
+                            .clickable { viewModel.onEvent(AddEditTodoEvent.ChangeColor(colorInt)) }
                     )
                 }
             }
@@ -244,17 +252,17 @@ fun AddEditCommon(
                     style = MaterialTheme.typography.body1
                 )
                 IconButton(onClick = {
-                    viewModel.onEvent(AddEditTaskEvent.ChangeAutoPlan(!viewModel.taskPlan.value))
+                    viewModel.onEvent(AddEditTodoEvent.ChangeAutoPlan(!viewModel.todoPlan.value))
                 }) {
                     Image(
-                        painter =   if (viewModel.taskPlan.value) painterResource(id = R.drawable.swon)
+                        painter =   if (viewModel.todoPlan.value) painterResource(id = R.drawable.swon)
                         else painterResource(id = R.drawable.swoff),
                         contentDescription = null,
                         modifier = Modifier.size(65.dp)
                     )
                 }
             }
-            if (viewModel.taskPlan.value){
+            if (viewModel.todoPlan.value){
                 Row(
                     modifier = Modifier
                         .fillMaxWidth().size(80.dp)
@@ -270,14 +278,14 @@ fun AddEditCommon(
                     Column(modifier = Modifier.padding(start = 50.dp, end = 10.dp, top = 20.dp))
                     {
                         Text(
-                            text = viewModel.taskEsTime.value.toString() + "hr",
+                            text = viewModel.todoEsTime.value.toString() + "hr",
                             color = MaterialTheme.colors.onSecondary,
                             style = MaterialTheme.typography.body1
                         )
                         Slider(
-                            value = viewModel.taskEsTime.value.toFloat(),
+                            value = viewModel.todoEsTime.value.toFloat(),
                             onValueChange = { pos ->
-                                viewModel.onEvent(AddEditTaskEvent.ChangeEsTime((pos).toInt())) },
+                                viewModel.onEvent(AddEditTodoEvent.ChangeEsTime((pos).toInt())) },
                             steps = 7,
                             valueRange = 0f..8f,
                             colors = SliderDefaults.colors(
@@ -317,7 +325,7 @@ fun AddEditCommon(
                         ),
                     ){
                         Text(
-                            text = viewModel.taskPlanDate.value,
+                            text = viewModel.todoPlanDate.value,
                             modifier = Modifier.size(200.dp),
                             textAlign = TextAlign.Left,
                             color = MaterialTheme.colors.onSecondary,
@@ -339,8 +347,8 @@ fun AddEditCommon(
                     TextButton(
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
                         onClick ={
-                            viewModel.onEvent(AddEditTaskEvent.DeleteTask(taskId))
-                            navController.navigateUp()
+                            viewModel.onEvent(AddEditTodoEvent.DeleteTodo(todoId))
+                            navController.navigate(Screen.TodosScreen.route)
                         },
                         modifier = Modifier.size(100.dp, 60.dp)
                     ) {

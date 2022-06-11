@@ -1,5 +1,6 @@
 package com.example.afinal.feature_task.domain.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.afinal.ui.theme.*
@@ -12,14 +13,14 @@ import com.example.afinal.ui.theme.*
 
 @Entity
 data class Task(
-    @PrimaryKey val id: Int? = null,
-    val title: String,
-    val dueDate: String,
-    val color: Int,
-    val autoPlan: Boolean,
-    val esTimeCost: Int, //unit: hr (1hr~8hr)
-    val planDate: String, // for autoPlan off
-    val done: Boolean
+    @PrimaryKey @ColumnInfo(name = "id") val id: Int? = null,
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "dueDate")  val dueDate: String,
+    @ColumnInfo(name = "color") val color: Int,
+    @ColumnInfo(name = "autoPlan") val autoPlan: Boolean,
+    @ColumnInfo(name = "esTimeCost") val esTimeCost: Int, //unit: hr (1hr~8hr)
+    @ColumnInfo(name = "planDate") val planDate: String, // for autoPlan off
+    @ColumnInfo(name = "done") val done: Boolean
     // when autoPlan is off, there's no guarantee that esTimeCost =0
     // likewise, when autoPlan is on, there's no guarantee about planDate's value
 ) {

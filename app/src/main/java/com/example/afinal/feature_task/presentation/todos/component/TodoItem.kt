@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.presentation.tasks.component
+package com.example.afinal.feature_task.presentation.todos.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,12 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.common.util.mapToGraph
+import com.example.afinal.feature_task.domain.model.Todo
 
 @Composable
-fun TaskItem(
-    task: Task,
+fun TodoItem(
+    todo: Todo,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -27,14 +27,16 @@ fun TaskItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = mapToGraph[Color(task.color)]!!),
+            painter = painterResource(id = mapToGraph[Color(todo.color)]!!),
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
-//        Text (text = task.id.toString()) //for debug
-        if(task.done) {
+
+//        Text (text = todo.taskId.toString()) for debug
+
+        if(todo.done) {
             Text(
-                text = task.title,
+                text = todo.title,
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.secondary,
                 textDecoration =  TextDecoration.LineThrough,
@@ -44,7 +46,7 @@ fun TaskItem(
         }
         else {
             Text(
-                text = task.title,
+                text = todo.title,
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.onSecondary,
                 maxLines = 1,
@@ -52,9 +54,9 @@ fun TaskItem(
             )
         }
 
-        if(task.autoPlan) {
+        if(todo.autoPlan) {
             Text(
-                text = task.esTimeCost.toString() + " hr",
+                text = todo.esTimeCost.toString() + " hr",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 80.dp),

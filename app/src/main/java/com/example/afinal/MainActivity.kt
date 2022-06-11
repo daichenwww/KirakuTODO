@@ -17,8 +17,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.afinal.feature_task.presentation.add_edit_task.AddTaskScreen
 import com.example.afinal.feature_task.presentation.add_edit_task.EditTaskScreen
+import com.example.afinal.feature_task.presentation.add_edit_todo.AddTodoScreen
 import com.example.afinal.feature_task.presentation.tasks.TasksScreen
 import com.example.afinal.common.util.Screen
+import com.example.afinal.feature_task.presentation.add_edit_todo.EditTodoScreen
+import com.example.afinal.feature_task.presentation.todos.TodosScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -35,19 +38,27 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.TasksScreen.route
                     ){
                         composable(route = Screen.TasksScreen.route) { TasksScreen(navController = navController) }
+                        composable(route = Screen.TodosScreen.route) { TodosScreen(navController = navController) }
                         composable(route = Screen.AddTaskScreen.route) { AddTaskScreen(navController = navController) }
+                        composable(route = Screen.AddTodoScreen.route) { AddTodoScreen(navController = navController) }
                         composable(
-                            route = Screen.EditTaskScreen.route +
-                                    "?taskId={taskId}",
+                            route = Screen.EditTaskScreen.route + "?taskId={taskId}",
                             arguments = listOf(
-                                navArgument(
-                                    name = "taskId"
-                                ) {
+                                navArgument(name = "taskId") {
                                     type = NavType.IntType
                                     defaultValue = -1
                                 }
                             )
                         ) { EditTaskScreen(navController = navController) }
+                        composable(
+                            route = Screen.EditTodoScreen.route + "?todoId={todoId}",
+                            arguments = listOf(
+                                navArgument(name = "todoId") {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                }
+                            )
+                        ) { EditTodoScreen(navController = navController) }
 //                        composable("addtask")  { AddTaskPage(navController = navController)}
                         composable("setting")  { SettingPage(navController = navController)}
                         composable("accumulation")  { AccumulationPage(navController = navController, "1")}

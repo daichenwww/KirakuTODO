@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.domain.use_case
+package com.example.afinal.feature_task.domain.use_case.task
 
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.repository.TaskRepository

@@ -1,5 +1,6 @@
 package com.example.afinal.feature_task.presentation.add_edit_task
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
@@ -9,18 +10,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.afinal.common.TextFieldState
 import com.example.afinal.feature_task.domain.model.InvalidTaskException
 import com.example.afinal.feature_task.domain.model.Task
-import com.example.afinal.feature_task.domain.use_case.TaskUseCases
+import com.example.afinal.feature_task.domain.use_case.task.TaskUseCases
 import com.example.afinal.common.util.getCurDate
-import com.example.afinal.feature_task.presentation.tasks.TasksState
+import com.example.afinal.common.util.shiftDate
+import com.example.afinal.feature_task.domain.model.Todo
+import com.example.afinal.feature_task.domain.use_case.todo.TodoUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.lang.Integer.min
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditTaskViewModel @Inject constructor(
+    private val todoUseCases: TodoUseCases,
     private val taskUseCases: TaskUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -54,6 +58,9 @@ class AddEditTaskViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     var currentTaskId: Int? = null
+
+    val workTime: Int = 5
+    val unitTime: Int = 2
 
     init {
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
@@ -106,13 +113,19 @@ class AddEditTaskViewModel @Inject constructor(
                 _taskEsTime.value = event.esTime
             }
             is AddEditTaskEvent.DeleteTask -> {
-                if(event.taskId != null)
-                { viewModelScope.launch { taskUseCases.deleteTask(event.taskId)} }
+                // todo: todo也要刪掉 根據taskID刪
+                if(event.taskId != null) {
+                    viewModelScope.launch {
+                        todoUseCases.deleteTodoByTaskId(event.taskId)
+                        taskUseCases.deleteTask(event.taskId)
+                    }
+                }
             }
             is AddEditTaskEvent.SaveTask -> {
                 viewModelScope.launch {
                     try {
-                        taskUseCases.addTask(
+//                        todoUseCases.deleteTodoByTaskId(null)
+                        val lastid = taskUseCases.addTask(
                             Task(
                                 title = taskTitle.value.text,
                                 dueDate = taskDueDate.value,
@@ -124,6 +137,66 @@ class AddEditTaskViewModel @Inject constructor(
                                 done = taskDone.value
                             )
                         )
+                        if (!taskPlan.value) { // user自己排
+                            todoUseCases.addTodo(
+                                Todo(
+                                    title = taskTitle.value.text,
+                                    dueDate = taskPlanDate.value,
+                                    color = taskColor.value,
+                                    taskId = lastid.toInt(),
+                                    id = if (currentTaskId!=null) (currentTaskId!!*100) else null,
+                                    autoPlan = taskPlan.value,
+                                    esTimeCost = taskEsTime.value,
+                                    done = taskDone.value
+                                )
+                            )
+                        }
+                        else { // 排程!
+                            var dateString: String = getCurDate()
+                            var numberOfDate: Int = 0
+                            var dates: MutableList<Pair<String, Long>> = arrayListOf()
+                            while (dateString != shiftDate(taskDueDate.value, 1)) {
+                                dates.add(Pair(dateString, todoUseCases.getTimeByDate(dateString)))
+                                dateString = shiftDate(dateString, 1)
+                                numberOfDate++
+                            }
+                            dates.sortBy {it.second}
+                            var taskTime: Int = taskEsTime.value
+                            var index: Int = 0
+                            var idd: Int = 0
+                            while (taskTime != 0) {
+                                ++idd
+                                var t: Int = min(taskTime, unitTime)
+                                todoUseCases.addTodo(
+                                    Todo(
+                                        title = taskTitle.value.text,
+                                        dueDate = dates[index].first,
+                                        color = taskColor.value,
+                                        taskId = lastid.toInt(),
+                                        id = if (currentTaskId != null) (currentTaskId!!*100+idd) else null,
+                                        autoPlan = taskPlan.value,
+                                        esTimeCost = t,
+                                        done = taskDone.value
+                                    )
+                                )
+                                taskTime -= t
+                                Log.d("before copy, first: " + dates[index].first+ " second: "+ dates[index].second.toString(), "debug")
+                                dates[index] = Pair(dates[index].first, dates[index].second+t)
+                                Log.d("after copy, first :" + dates[index].first+ " second: " + dates[index].second.toString(),  "debug")
+                                if (dates[index].second > workTime){
+                                    //throw TimeException("代辦事項時長已超過舒適時長!")
+                                }
+                                if (index+1 == numberOfDate) {
+                                    if (dates[index].second > dates[0].second) index = 0
+                                    Log.d("index =" + index.toString(), "index??")
+                                }
+                                else if (dates[index].second > dates[index+1].second) {
+                                    index += 1
+                                    Log.d("index =" + index.toString(), "index??")
+                                }
+                            }
+                        }
+
                         _eventFlow.emit(UiEvent.SaveTask)
                     } catch(e: InvalidTaskException) {
                         _eventFlow.emit(
@@ -142,3 +215,5 @@ class AddEditTaskViewModel @Inject constructor(
         object SaveTask: UiEvent()
     }
 }
+
+class TimeException(messege: String) : Exception(messege)
