@@ -1,9 +1,11 @@
 package com.example.afinal.feature_task.presentation.stampbook
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afinal.feature_task.domain.use_case.TaskUseCases
+import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEvent
 import com.example.afinal.feature_task.presentation.tasks.TasksState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -11,31 +13,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StampBookViewModel @Inject constructor(
-    private val taskUseCases: TaskUseCases
+    private val taskUseCases: TaskUseCases,
+    savedStateHandle: SavedStateHandle
+
 ) : ViewModel() {
 
     private var _doneTaskNum = 0
+    private var _page = ""
 
     var doneTaskNum = 0
-    var page = ""
     init {
         _doneTaskNum = myFunction()
         doneTaskNum = _doneTaskNum
-        page = "1"
     }
 
-    fun nextPage(){
-        if(page.toInt() < 3){
-            val newPage = page.toInt() + 1
-            page = newPage.toString()
-        }
-    }
-    fun prevPage(){
-        if(page.toInt() > 1){
-            val newPage = page.toInt() - 1
-            page = newPage.toString()
-        }
-    }
 
     fun myFunction(): Int = runBlocking {
         getDoneTaskNumber().await()

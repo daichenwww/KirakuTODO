@@ -79,7 +79,7 @@ fun SideBar(navController: NavController) { // 這個drawer的大小好像只能
             ) }
         Button(
             modifier = Modifier.size(150.dp, 60.dp),
-            onClick = {navController.navigate("stampsbook")},
+            onClick = {navController.navigate("stampsbookp1")},
             contentPadding = PaddingValues(start = 7.dp, end = 7.dp),
             elevation = null,
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)

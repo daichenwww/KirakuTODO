@@ -21,7 +21,7 @@ interface TaskDao {
     // edited by: zshzzz
     // 1. searchTaskInRange
     @Query("SELECT COUNT(*) FROM task WHERE planDate >= :start AND planDate < :end AND done=1")
-    suspend fun getDoneTaskNumberInRange(start: String, end: String): Int
+    suspend fun getDoneTaskNumberInRange(end: String, start: String): Int
 
     // 2. find the task number which has been done
     @Query("SELECT COUNT(*) FROM task WHERE done = 1")

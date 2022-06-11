@@ -1,46 +1,102 @@
 package com.example.afinal.feature_task.presentation.accumulation
 
+import android.text.TextUtils.substring
 import androidx.lifecycle.ViewModel
 import com.example.afinal.common.util.getCurDate
 import com.example.afinal.common.util.shiftDate
 import com.example.afinal.feature_task.domain.use_case.TaskUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class AccumulationViewModel @Inject constructor(
     private val taskUseCases: TaskUseCases
 ) : ViewModel() {
     // Get dates
-    /*
 
     private val _CurDate = getCurDate()
-    val CurDate = _CurDate
+    val CurDate = _CurDate.substring(IntRange(5,9))
 
-    private val _CurDateShift7 = shiftDate(_CurDate, 7)
-    val CurDateShift7 = _CurDateShift7
+    private val _CurDateShift7 = shiftDate(_CurDate, -7)
+    val CurDateShift7 = _CurDateShift7.substring(IntRange(5,9))
 
-    private val _CurDateShift14 = shiftDate(_CurDate, 14)
-    val CurDateShift14 = _CurDateShift14
+    private val _CurDateShift14 = shiftDate(_CurDate, -14)
+    val CurDateShift14 = _CurDateShift14.substring(IntRange(5,9))
 
-    private val _CurDateShift21 = shiftDate(_CurDate, 21)
-    val CurDateShift21 = _CurDateShift21
+    private val _CurDateShift21 = shiftDate(_CurDate, -21)
+    val CurDateShift21 = _CurDateShift21.substring(IntRange(5,9))
 
-    private val _CurDateShift28 = shiftDate(_CurDate, 28)
-    val CurDateShift28 = _CurDateShift28
+    private val _CurDateShift28 = shiftDate(_CurDate, -28)
+    val CurDateShift28 = _CurDateShift28.substring(IntRange(5,9))
 
-    // Get done number in weeks
-    private val _DoneTaskNumIn7 = taskUseCases.getDoneTaskNumberInRange(_CurDate, _CurDateShift7)
-    val DoneTaskNumIn7 = _DoneTaskNumIn7
+    private var _doneTaskNumIn7 = 0
+    private var _doneTaskNumIn14 = 0
+    private var _doneTaskNumIn21 = 0
+    private var _doneTaskNumIn28 = 0
 
-    private val _DoneTaskNumIn14 = taskUseCases.getDoneTaskNumberInRange(_CurDate, _CurDateShift14)
-    val DoneTaskNumIn14 = _DoneTaskNumIn14
+    var doneTaskNumIn7 = 0
+    var doneTaskNumIn14 = 0
+    var doneTaskNumIn21 = 0
+    var doneTaskNumIn28 = 0
+    var maxDoneInMonth = 0
 
-    private val _DoneTaskNumIn21 = taskUseCases.getDoneTaskNumberInRange(_CurDate, _CurDateShift21)
-    val DoneTaskNumIn21 = _DoneTaskNumIn21
 
-    private val _DoneTaskNumIn28 = taskUseCases.getDoneTaskNumberInRange(_CurDate, _CurDateShift28)
-    val DoneTaskNumIn28 = _DoneTaskNumIn28
 
-     */
+    init{
+        _doneTaskNumIn7 = _doneTaskNumIn7()
+        doneTaskNumIn7 = _doneTaskNumIn7
+
+        _doneTaskNumIn14 = _doneTaskNumIn14()
+        doneTaskNumIn14 = _doneTaskNumIn14
+
+        _doneTaskNumIn21 = _doneTaskNumIn21()
+        doneTaskNumIn21 = _doneTaskNumIn21
+
+        _doneTaskNumIn28 = _doneTaskNumIn28()
+        doneTaskNumIn28 = _doneTaskNumIn28
+
+        maxDoneInMonth = max(doneTaskNumIn7, max(doneTaskNumIn14, max(doneTaskNumIn21, doneTaskNumIn28)))
+    }
+
+    suspend fun getDoneTaskNumIn7(): Deferred<Int> = withContext(Dispatchers.Default){
+        async {
+            // 今天 七天前
+            taskUseCases.getDoneTaskNumberInRange(_CurDate, _CurDateShift7)
+        }
+    }
+    suspend fun getDoneTaskNumIn14(): Deferred<Int> = withContext(Dispatchers.Default){
+        async {
+            taskUseCases.getDoneTaskNumberInRange(_CurDateShift7, _CurDateShift14)
+        }
+    }
+    suspend fun getDoneTaskNumIn21(): Deferred<Int> = withContext(Dispatchers.Default){
+        async {
+            taskUseCases.getDoneTaskNumberInRange(_CurDateShift14, _CurDateShift21)
+        }
+    }
+    suspend fun getDoneTaskNumIn28(): Deferred<Int> = withContext(Dispatchers.Default){
+        async {
+            taskUseCases.getDoneTaskNumberInRange(_CurDateShift21, _CurDateShift28)
+        }
+    }
+
+    fun _doneTaskNumIn7(): Int = runBlocking {
+        getDoneTaskNumIn7().await()
+
+    }
+
+    fun _doneTaskNumIn14(): Int = runBlocking {
+        getDoneTaskNumIn14().await()
+    }
+
+    fun _doneTaskNumIn21(): Int = runBlocking {
+        getDoneTaskNumIn21().await()
+    }
+
+    fun _doneTaskNumIn28(): Int = runBlocking {
+        getDoneTaskNumIn28().await()
+    }
+
 }

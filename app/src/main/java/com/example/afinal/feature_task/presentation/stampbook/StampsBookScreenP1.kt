@@ -11,19 +11,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
+import com.example.afinal.common.util.Screen
+import com.example.afinal.feature_task.presentation.stampbook.Meow
 import com.example.afinal.feature_task.presentation.stampbook.StampBookViewModel
 
 
 @Composable
-fun StampsBookPage(navController: NavController,
+fun StampsBookPageP1(navController: NavController,
                    viewModel: StampBookViewModel = hiltViewModel()
 ){
     val doneTaskNum = viewModel.doneTaskNum
-    val page = viewModel.page
+    val page ="1"
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.fillMaxWidth().size(80.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(80.dp),
                 title = {
                     Text(
                         text = "圖鑑",
@@ -52,7 +56,9 @@ fun StampsBookPage(navController: NavController,
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
-                Box(modifier = Modifier.fillMaxHeight(0.9f).fillMaxWidth())
+                Box(modifier = Modifier
+                    .fillMaxHeight(0.9f)
+                    .fillMaxWidth())
                 {
                     Image(
                         painter = painterResource(id = R.drawable.booksbackground2),
@@ -75,32 +81,24 @@ fun StampsBookPage(navController: NavController,
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            when(page){
-                                "1"->{
-                                    Meow("000", false, "Kiraku TODO!")
-                                    Meow("001", false, "Finish 1 todo")
-                                }
-                                else ->{
-                                    Meow("006", false, "Kiraku TODO!")
-                                    Meow("007", false, "Finish 1 todo")
-                                }
-                            }
+                            Meow("000", false, "Kiraku TODO!")
+                            Meow("001", (doneTaskNum<1), "Finish 1 todo")
                         }
                         Row(
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Meow("002", false, "Finish 5 todo")
+                            Meow("002", (doneTaskNum<5), "Finish 5 todo")
                             //Spacer(modifier = Modifier.width(10.dp))
-                            Meow("003", false, "Finish 10 todo")
+                            Meow("003", (doneTaskNum<6), "Finish 10 todo")
                         }
                         Row(
                             modifier = Modifier.fillMaxWidth(0.75f),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Meow("004", false, "Finish 15 todo")
+                            Meow("004", (doneTaskNum<15), "Finish 15 todo")
                             //Spacer(modifier = Modifier.width(10.dp))
-                            Meow("005", true, "Finish 20 todo")
+                            Meow("005", (doneTaskNum<20), "Finish 20 todo")
                         }
                         Row(
                             modifier = Modifier
@@ -109,9 +107,9 @@ fun StampsBookPage(navController: NavController,
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            // navigate to next page
-                            IconButton(onClick = { viewModel.prevPage() }) {
-                                if (page > "1"){
+                            // navigate to prev page
+                            IconButton(onClick ={}) {
+                                if (page == "1"){
                                     Image(
                                         painter = painterResource(id = R.drawable.last_no),
                                         contentDescription = null,
@@ -135,12 +133,12 @@ fun StampsBookPage(navController: NavController,
                                 color = MaterialTheme.colors.onSecondary
                             )
                             Text(
-                                text = "/ 10",
+                                text = "/ 3",
                                 style = MaterialTheme.typography.body2,
                                 color = MaterialTheme.colors.onSecondary
                             )
-                            IconButton(onClick = { /*TODO*/ }) {
-                                if (page < "3"){
+                            IconButton(onClick = { navController.navigate("stampsbookp2") }) {
+                                if (page != "3"){
                                     Image(
                                         painter = painterResource(id = R.drawable.next),
                                         contentDescription = null,
@@ -193,138 +191,6 @@ fun StampsBookPage(navController: NavController,
             }
     }
 }
-
-@Composable
-fun Meow(number: String, locked: Boolean, unlockedCondition: String, /*image: ?*/){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        if (!locked) {
-            when (number) {
-                "000" -> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_000),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )
-                }"001"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_001),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    ) }
-                "002" -> {
-                Image(
-                    painter = painterResource(id = R.drawable.stamp_002),
-                    contentDescription = null,
-                    modifier = Modifier.size(140.dp, 90.dp)
-                ) }
-                "003"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_003),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                )}
-                "004"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_004),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                )}
-                "005"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_005),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "006"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_006),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "007"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_007),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "008"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_008),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "009"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_009),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "010"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_010),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "012"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_012),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "013"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_013),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "014"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_014),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                "015"-> {
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_015),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )}
-                else ->{
-                    Image(
-                        painter = painterResource(id = R.drawable.stamp_undefined),
-                        contentDescription = null,
-                        modifier = Modifier.size(140.dp, 90.dp)
-                    )
-                }
-            }
-        }
-        else Image(
-                painter = painterResource(id = R.drawable.stamp_undefined),
-                contentDescription = null,
-            modifier = Modifier.size(140.dp, 90.dp)
-        )
-        Row(){
-            Text(text = "No.", style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onSecondary)
-            Text(text = number, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onSecondary) //編號
-        }
-        Row(){
-            if (locked) Image(
-                painter = painterResource(id = R.drawable.lock),
-                contentDescription = null,
-                modifier = Modifier.padding(5.dp)
-            )
-            else Image(
-                painter = painterResource(id = R.drawable.unlock),
-                contentDescription = null,
-                modifier = Modifier.padding(5.dp)
-            )
-            Text(text = unlockedCondition, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onSecondary) // 解鎖條件
-        }
-    }
-}
-
 
 
 //@Preview
