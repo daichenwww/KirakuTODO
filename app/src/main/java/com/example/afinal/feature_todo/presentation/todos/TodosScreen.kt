@@ -1,4 +1,4 @@
-package com.example.afinal.feature_task.presentation.tasks
+package com.example.afinal.feature_todo.presentation.todos
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,15 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
-import com.example.afinal.feature_task.presentation.tasks.component.ListwithHeader
+import com.example.afinal.feature_todo.presentation.todos.component.ListwithHeader
 import com.example.afinal.feature_task.presentation.tasks.component.SideBar
 import com.example.afinal.common.util.Screen
 import kotlinx.coroutines.launch
 
 @Composable
-fun TasksScreen(
+fun TodosScreen(
     navController: NavController,
-    viewModel: TasksViewModel = hiltViewModel()
+    viewModel: TodosViewModel = hiltViewModel()
 ){
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
@@ -60,14 +60,14 @@ fun TasksScreen(
                 },
                 actions = {
                     IconButton(
-                        { navController.navigate(Screen.TodosScreen.route) }
+                        { navController.navigate(Screen.TasksScreen.route) }
                         // TODO: navigate to TODO screen
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_modetodo),
+                            painter = painterResource(id = R.drawable.ic_modedeadline),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(40.dp)
+                                .size(45.dp)
                                 .absoluteOffset(x = (-10).dp)
                         )
                         //for deadline image: Image(ic_modedeadline, size(45.dp)
@@ -80,7 +80,7 @@ fun TasksScreen(
                 backgroundColor = MaterialTheme.colors.onPrimary,
                 contentColor = MaterialTheme.colors.background,
                 modifier = Modifier.size(100.dp),
-                onClick = { navController.navigate(Screen.AddTaskScreen.route) }
+                onClick = { navController.navigate(Screen.AddTodoScreen.route) }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
