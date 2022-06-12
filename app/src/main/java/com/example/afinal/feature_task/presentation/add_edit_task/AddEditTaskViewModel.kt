@@ -12,6 +12,7 @@ import com.example.afinal.feature_task.domain.model.InvalidTaskException
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.use_case.task.TaskUseCases
 import com.example.afinal.common.util.getCurDate
+import com.example.afinal.common.util.getDateName
 import com.example.afinal.common.util.shiftDate
 import com.example.afinal.feature_task.domain.model.Todo
 import com.example.afinal.feature_task.domain.use_case.todo.TodoUseCases
@@ -59,7 +60,8 @@ class AddEditTaskViewModel @Inject constructor(
 
     var currentTaskId: Int? = null
 
-    val workTime: Int = 5
+    val workTimeForWeekDay: Int = 3
+    val workTimeForWeenkend: Int = 8
     val unitTime: Int = 2
 
     init {
@@ -156,7 +158,11 @@ class AddEditTaskViewModel @Inject constructor(
                             var numberOfDate: Int = 0
                             var dates: MutableList<Pair<String, Long>> = arrayListOf()
                             while (dateString != shiftDate(taskDueDate.value, 1)) {
-                                dates.add(Pair(dateString, todoUseCases.getTimeByDate(dateString)))
+                                if (getDateName(dateString) == "Sat" || getDateName(dateString) == "Sun") {
+                                    // 處理假日舒適工時較長
+                                    dates.add(Pair(dateString, todoUseCases.getTimeByDate(dateString)-(workTimeForWeenkend-workTimeForWeekDay)))
+                                }
+                                else dates.add(Pair(dateString, todoUseCases.getTimeByDate(dateString)))
                                 dateString = shiftDate(dateString, 1)
                                 numberOfDate++
                             }
@@ -183,7 +189,7 @@ class AddEditTaskViewModel @Inject constructor(
                                 Log.d("before copy, first: " + dates[index].first+ " second: "+ dates[index].second.toString(), "debug")
                                 dates[index] = Pair(dates[index].first, dates[index].second+t)
                                 Log.d("after copy, first :" + dates[index].first+ " second: " + dates[index].second.toString(),  "debug")
-                                if (dates[index].second > workTime){
+                                if (dates[index].second > workTimeForWeekDay){
                                     //throw TimeException("代辦事項時長已超過舒適時長!")
                                 }
                                 if (index+1 == numberOfDate) {
