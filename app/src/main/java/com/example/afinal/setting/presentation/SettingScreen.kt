@@ -7,11 +7,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
+import com.example.afinal.setting.presentation.UserPreferenceViewModel
 
 @Composable
-fun SettingPage(navController: NavController){
+fun SettingPage(navController: NavController,
+                userPreferenceViewModel: UserPreferenceViewModel = hiltViewModel()
+){
+    val settings = userPreferenceViewModel.settings
     Scaffold(
         topBar = {
             TopAppBar(
@@ -45,6 +50,40 @@ fun SettingPage(navController: NavController){
             verticalArrangement = Arrangement.Top,
         ) {
             Setting("舒適工時", "平日2小時, 假日8小時", false, false)
+            Row(
+                modifier = Modifier
+                    .size(395.dp, 80.dp)
+                    .padding(
+                        start = 20.dp,
+                        end = 10.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                val selected = remember{ mutableStateOf(userPreferenceViewModel) }
+                Text(
+                    text = "舒適工時",
+                    style = MaterialTheme.typography.h3,
+                    color =  MaterialTheme.colors.onSecondary
+                )
+                Text(
+                    text = "${toString(settings)}",
+                    style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.secondary
+                )
+                if (isSwitch) {
+                    IconButton(onClick = { /*TODO*/
+                        selected.value = !selected.value
+                    }) {
+                        Image(
+                            painter =   if (selected.value) painterResource(id = R.drawable.swon)
+                            else painterResource(id = R.drawable.swoff),
+                            contentDescription = null,
+                            modifier = Modifier.size(65.dp)
+                        )
+                    }
+                }
+            }
             Setting("提醒", "上午 09:00, 下午 18:00", true, true)
             Setting("字體大小", "中", false, false)
             Setting("深色模式", "", true, false)

@@ -53,6 +53,11 @@ fun ListwithHeader(
                                 modifier = Modifier.absoluteOffset(0.dp, (-10).dp)
                             )
                         } //TODO: update stamp
+                        /*
+                            add for loop here, 把StampBookViewModel收進來當參數
+                            getStampId() -> finish task 之後應該要更新StampId(亂數決定)
+                            用stampItem(stampId: String)來蓋印章
+                         */
                         Spacer(modifier = Modifier.width(8.dp))
                         Image(
                             painter = painterResource(id = R.drawable.stamp_000),

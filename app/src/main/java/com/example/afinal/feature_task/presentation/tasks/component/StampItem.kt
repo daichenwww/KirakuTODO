@@ -11,114 +11,115 @@ import androidx.compose.ui.unit.dp
 import com.example.afinal.R
 
 @Composable
-// input: Stamp id
-// determined in finish state...?
+// input: stampId
+// determined in finish state
+// modify stampId to fit Int.toString
 fun Stamp(stampId: String){
     Spacer(modifier = Modifier.width(8.dp))
     when (stampId){
-        "000" -> {
+        "0" -> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_000),
                 contentDescription = null,
                 modifier = Modifier.size(70.dp, 45.dp)
             )
-        }"001"-> {
+        }"1"-> {
         Image(
             painter = painterResource(id = R.drawable.stamp_001),
             contentDescription = null,
             modifier = Modifier.size(60.dp, 45.dp)
         ) }
-        "002" -> {
+        "2" -> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_002),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             ) }
-        "003"-> {
+        "3"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_003),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "004"-> {
+        "4"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_004),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "005"-> {
+        "5"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_005),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "006"-> {
+        "6"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_006),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "007"-> {
+        "7"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_007),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "008"-> {
+        "8"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_008),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "009"-> {
+        "9"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_009),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "010"-> {
+        "10"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_010),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "011"-> {
+        "11"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_011),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "012"-> {
+        "12"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_012),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "013"-> {
+        "13"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_013),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "014"-> {
+        "14"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_014),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp, 45.dp)
             )
         }
-        "015"-> {
+        "15"-> {
             Image(
                 painter = painterResource(id = R.drawable.stamp_015),
                 contentDescription = null,

@@ -24,6 +24,7 @@ import com.example.afinal.feature_task.presentation.stampbook.StampsBookPageP3
 import dagger.hilt.android.AndroidEntryPoint
 
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
