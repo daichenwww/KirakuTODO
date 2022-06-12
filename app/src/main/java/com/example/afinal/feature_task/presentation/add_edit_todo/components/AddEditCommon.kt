@@ -2,6 +2,10 @@ package com.example.afinal.feature_task.presentation.add_edit_todo.components
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.background
@@ -43,6 +47,8 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
+
+@ExperimentalAnimationApi
 @Composable
 
 fun AddEditCommon(
@@ -92,6 +98,8 @@ fun AddEditCommon(
     )
 
     val scaffoldState = rememberScaffoldState()
+
+    var buttonScene by remember {mutableStateOf("on")}
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -195,7 +203,9 @@ fun AddEditCommon(
                 )
 
                 TextButton(
-                    modifier = Modifier.size(250.dp, 65.dp).padding(start = 40.dp,top = 7.dp),
+                    modifier = Modifier
+                        .size(250.dp, 65.dp)
+                        .padding(start = 40.dp, top = 7.dp),
                     onClick = { dDatePickerDialog.show() },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = MaterialTheme.colors.background,
@@ -231,41 +241,60 @@ fun AddEditCommon(
                             .size(50.dp)
                             .shadow(15.dp, CircleShape)
                             .clip(CircleShape)
-                            .background(((if (viewModel.todoColor.value == colorInt) { color }
-                            else { mapToLightColor[color] })!!))
+                            .background(
+                                ((if (viewModel.todoColor.value == colorInt) {
+                                    color
+                                } else {
+                                    mapToLightColor[color]
+                                })!!)
+                            )
                             .clickable { viewModel.onEvent(AddEditTodoEvent.ChangeColor(colorInt)) }
                     )
                 }
             }
-
             Row(
                 modifier = Modifier
-                    .fillMaxWidth().size(80.dp)
+                    .fillMaxWidth()
+                    .size(80.dp)
                     .padding(start = 25.dp, end = 50.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
-
                 Text(
                     text = "自動排程",
                     color = MaterialTheme.colors.onSecondary,
                     style = MaterialTheme.typography.body1
                 )
                 IconButton(onClick = {
+                    buttonScene = when (buttonScene) {
+                        "on" -> "off"
+                        else -> "on"
+                    }
                     viewModel.onEvent(AddEditTodoEvent.ChangeAutoPlan(!viewModel.todoPlan.value))
                 }) {
-                    Image(
-                        painter =   if (viewModel.todoPlan.value) painterResource(id = R.drawable.swon)
-                        else painterResource(id = R.drawable.swoff),
-                        contentDescription = null,
-                        modifier = Modifier.size(65.dp)
-                    )
+                    Crossfade(
+                        targetState = buttonScene,
+                        animationSpec = tween(durationMillis = 500)) { buttonScene->
+                        when (buttonScene) {
+                            "on" -> Image (
+                                painter = painterResource(id = R.drawable.swon),
+                                contentDescription = null,
+                                modifier = Modifier.size(65.dp)
+                            )
+                            else -> Image(
+                                    painter =  painterResource(id = R.drawable.swoff),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(65.dp)
+                                )
+                        }
+                    }
                 }
             }
             if (viewModel.todoPlan.value){
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth().size(80.dp)
+                        .fillMaxWidth()
+                        .size(80.dp)
                         .padding(start = 25.dp, end = 30.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -302,7 +331,8 @@ fun AddEditCommon(
             else{
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth().size(80.dp)
+                        .fillMaxWidth()
+                        .size(80.dp)
                         .padding(start = 20.dp, end = 30.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -313,7 +343,9 @@ fun AddEditCommon(
                         style = MaterialTheme.typography.body1
                     )
                     TextButton(
-                        modifier = Modifier.size(250.dp, 65.dp).padding(start = 40.dp,top = 7.dp),
+                        modifier = Modifier
+                            .size(250.dp, 65.dp)
+                            .padding(start = 40.dp, top = 7.dp),
                         onClick = { pDatePickerDialog.show() },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = MaterialTheme.colors.background,

@@ -2,16 +2,16 @@ package com.example.afinal.feature_task.presentation.add_edit_task.components
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +35,7 @@ import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEve
 import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskViewModel
 import kotlinx.coroutines.flow.collectLatest
 
+@ExperimentalAnimationApi
 @Composable
 
 fun AddEditCommon(
@@ -84,6 +85,8 @@ fun AddEditCommon(
     )
 
     val scaffoldState = rememberScaffoldState()
+
+    var autoPlanScene by remember {mutableStateOf("on")}
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -187,7 +190,9 @@ fun AddEditCommon(
                 )
 
                 TextButton(
-                    modifier = Modifier.size(250.dp, 65.dp).padding(start = 40.dp,top = 7.dp),
+                    modifier = Modifier
+                        .size(250.dp, 65.dp)
+                        .padding(start = 40.dp, top = 7.dp),
                     onClick = { dDatePickerDialog.show() },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = MaterialTheme.colors.background,
@@ -223,8 +228,13 @@ fun AddEditCommon(
                             .size(50.dp)
                             .shadow(15.dp, CircleShape)
                             .clip(CircleShape)
-                            .background(((if (viewModel.taskColor.value == colorInt) { color }
-                            else { mapToLightColor[color] })!!))
+                            .background(
+                                ((if (viewModel.taskColor.value == colorInt) {
+                                    color
+                                } else {
+                                    mapToLightColor[color]
+                                })!!)
+                            )
                             .clickable { viewModel.onEvent(AddEditTaskEvent.ChangeColor(colorInt)) }
                     )
                 }
@@ -232,7 +242,8 @@ fun AddEditCommon(
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth().size(80.dp)
+                    .fillMaxWidth()
+                    .size(80.dp)
                     .padding(start = 25.dp, end = 50.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -244,88 +255,114 @@ fun AddEditCommon(
                     style = MaterialTheme.typography.body1
                 )
                 IconButton(onClick = {
+                    autoPlanScene = when (autoPlanScene) {
+                        "on" -> "off"
+                        else -> "on"
+                    }
                     viewModel.onEvent(AddEditTaskEvent.ChangeAutoPlan(!viewModel.taskPlan.value))
                 }) {
-                    Image(
-                        painter =   if (viewModel.taskPlan.value) painterResource(id = R.drawable.swon)
-                        else painterResource(id = R.drawable.swoff),
-                        contentDescription = null,
-                        modifier = Modifier.size(65.dp)
-                    )
-                }
-            }
-            if (viewModel.taskPlan.value){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth().size(80.dp)
-                        .padding(start = 25.dp, end = 30.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    Text(
-                        text = "預計費時",
-                        color = MaterialTheme.colors.onSecondary,
-                        style = MaterialTheme.typography.body1
-                    )
-                    Column(modifier = Modifier.padding(start = 50.dp, end = 10.dp, top = 20.dp))
-                    {
-                        Text(
-                            text = viewModel.taskEsTime.value.toString() + "hr",
-                            color = MaterialTheme.colors.onSecondary,
-                            style = MaterialTheme.typography.body1
-                        )
-                        Slider(
-                            value = viewModel.taskEsTime.value.toFloat(),
-                            onValueChange = { pos ->
-                                viewModel.onEvent(AddEditTaskEvent.ChangeEsTime((pos).toInt())) },
-                            steps = 7,
-                            valueRange = 0f..8f,
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colors.onBackground,
-                                inactiveTrackColor = DarkGray,
-                                activeTrackColor = MaterialTheme.colors.primary,
-                                inactiveTickColor = White,
-                                activeTickColor = MaterialTheme.colors.onPrimary
+                    Crossfade(
+                        targetState = autoPlanScene,
+                        animationSpec = tween(durationMillis = 500)
+                    ) { autoPlanScene->
+                        when (autoPlanScene) {
+                            "on" -> Image (
+                                painter = painterResource(id = R.drawable.swon),
+                                contentDescription = null,
+                                modifier = Modifier.size(65.dp)
                             )
-                        )
+                            else -> Image(
+                                painter =  painterResource(id = R.drawable.swoff),
+                                contentDescription = null,
+                                modifier = Modifier.size(65.dp)
+                            )
+                        }
                     }
                 }
             }
-            else{
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth().size(80.dp)
-                        .padding(start = 20.dp, end = 30.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "安排日",
-                        color = MaterialTheme.colors.onSecondary,
-                        style = MaterialTheme.typography.body1
-                    )
-                    TextButton(
-                        modifier = Modifier.size(250.dp, 65.dp).padding(start = 40.dp,top = 7.dp),
-                        onClick = { pDatePickerDialog.show() },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.background,
-                            contentColor = MaterialTheme.colors.background,
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 0.dp
-                        ),
-                    ){
-                        Text(
-                            text = viewModel.taskPlanDate.value,
-                            modifier = Modifier.size(200.dp),
-                            textAlign = TextAlign.Left,
-                            color = MaterialTheme.colors.onSecondary,
-                            style = MaterialTheme.typography.body1
-                        )
+            Crossfade(
+                targetState = autoPlanScene,
+                animationSpec = tween(durationMillis = 500)) { autoPlanScene->
+                    when (autoPlanScene) {
+                        "on"-> {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .size(80.dp)
+                                    .padding(start = 25.dp, end = 30.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ){
+                                Text(
+                                    text = "預計費時",
+                                    color = MaterialTheme.colors.onSecondary,
+                                    style = MaterialTheme.typography.body1
+                                )
+                                Column(modifier = Modifier.padding(start = 50.dp, end = 10.dp, top = 20.dp))
+                                {
+                                    Text(
+                                        text = viewModel.taskEsTime.value.toString() + "hr",
+                                        color = MaterialTheme.colors.onSecondary,
+                                        style = MaterialTheme.typography.body1
+                                    )
+                                    Slider(
+                                        value = viewModel.taskEsTime.value.toFloat(),
+                                        onValueChange = { pos ->
+                                            viewModel.onEvent(AddEditTaskEvent.ChangeEsTime((pos).toInt())) },
+                                        steps = 7,
+                                        valueRange = 0f..8f,
+                                        colors = SliderDefaults.colors(
+                                            thumbColor = MaterialTheme.colors.onBackground,
+                                            inactiveTrackColor = DarkGray,
+                                            activeTrackColor = MaterialTheme.colors.primary,
+                                            inactiveTickColor = White,
+                                            activeTickColor = MaterialTheme.colors.onPrimary
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                        else -> {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .size(80.dp)
+                                    .padding(start = 20.dp, end = 30.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "安排日",
+                                    color = MaterialTheme.colors.onSecondary,
+                                    style = MaterialTheme.typography.body1
+                                )
+                                TextButton(
+                                    modifier = Modifier
+                                        .size(250.dp, 65.dp)
+                                        .padding(start = 40.dp, top = 7.dp),
+                                    onClick = { pDatePickerDialog.show() },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = MaterialTheme.colors.background,
+                                        contentColor = MaterialTheme.colors.background,
+                                    ),
+                                    elevation = ButtonDefaults.elevation(
+                                        defaultElevation = 0.dp,
+                                        pressedElevation = 0.dp
+                                    ),
+                                ){
+                                    Text(
+                                        text = viewModel.taskPlanDate.value,
+                                        modifier = Modifier.size(200.dp),
+                                        textAlign = TextAlign.Left,
+                                        color = MaterialTheme.colors.onSecondary,
+                                        style = MaterialTheme.typography.body1
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(50.dp))
+                            }
+                        }
                     }
-                    Spacer(modifier = Modifier.width(50.dp))
-                }
+
             }
 
             if(!isAddPage) {
