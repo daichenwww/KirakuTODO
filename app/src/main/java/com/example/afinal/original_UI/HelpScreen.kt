@@ -1,3 +1,6 @@
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,13 +13,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.afinal.R
 
-
+@ExperimentalAnimationApi
 @Composable
 fun HelpPage(navController: NavController){
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.fillMaxWidth().size(80.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(80.dp),
                 title = {
                     Text(
                         text = "說明",
@@ -61,9 +66,11 @@ fun HelpPage(navController: NavController){
 
 @Composable
 fun Help(title: String, content: String){
-    Column( modifier = Modifier.fillMaxWidth().padding(top = 20.dp))
+    Column( modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = 20.dp))
     {
-        val selected = remember { mutableStateOf(false) }
+        var selected by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -74,15 +81,23 @@ fun Help(title: String, content: String){
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Start
         ) {
-            IconButton(onClick = {
-                selected.value = !selected.value
-            }) {
-                Image(
-                    painter = if (selected.value) painterResource(id = R.drawable.up_arrow)
-                    else painterResource(id = R.drawable.down_arrow),
-                    contentDescription = null,
-                    modifier = Modifier.size(35.dp)
-                )
+            IconButton(onClick = { selected = !selected }) {
+                Crossfade(
+                    targetState = selected,
+                    animationSpec = tween(200)) { selected->
+                        when (selected) {
+                            true -> Image(
+                                painter =painterResource(id = R.drawable.up_arrow),
+                                contentDescription = null,
+                                modifier = Modifier.size(35.dp)
+                            )
+                            else -> Image(
+                               painterResource(id = R.drawable.down_arrow),
+                                contentDescription = null,
+                                modifier = Modifier.size(35.dp)
+                            )
+                        }
+                }
             }
             Text(
                 text = "$title",
@@ -91,13 +106,18 @@ fun Help(title: String, content: String){
                 modifier = Modifier.padding(start = 10.dp)
             )
         }
-        if (selected.value) {
-            Text(
-                text = "$content",
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.secondary,
-                modifier = Modifier.padding(start = 60.dp, end = 20.dp, top = 10.dp)
-            )
+        Crossfade(
+            targetState = selected,
+            animationSpec = tween(200)) { selected->
+            when (selected) {
+                true -> Text(
+                    text = "$content",
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.secondary,
+                    modifier = Modifier.padding(start = 60.dp, end = 20.dp, top = 10.dp)
+                )
+                else -> {}
+            }
         }
     }
 }

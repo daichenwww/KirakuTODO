@@ -1,5 +1,6 @@
 package com.example.afinal.feature_task.presentation.add_edit_todo
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -7,6 +8,7 @@ import com.example.afinal.feature_task.presentation.add_edit_todo.components.Add
 
 //這裡實際上不會進來
 
+@ExperimentalAnimationApi
 @Composable
 fun AddTodoScreen(
     navController: NavController,

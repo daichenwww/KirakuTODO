@@ -40,6 +40,7 @@ import com.example.afinal.common.util.*
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.model.Task.Companion.taskColors
 import com.example.afinal.feature_task.domain.model.Todo
+import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEvent
 import com.example.afinal.feature_task.presentation.add_edit_task.components.TransparentHintTextField
 import com.example.afinal.feature_task.presentation.add_edit_todo.AddEditTodoEvent
 import com.example.afinal.feature_task.presentation.add_edit_todo.AddEditTodoViewModel
@@ -99,7 +100,7 @@ fun AddEditCommon(
 
     val scaffoldState = rememberScaffoldState()
 
-    var buttonScene by remember {mutableStateOf("on")}
+    var autoPlanScene by remember {mutableStateOf("on")}
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -266,106 +267,114 @@ fun AddEditCommon(
                     style = MaterialTheme.typography.body1
                 )
                 IconButton(onClick = {
-                    buttonScene = when (buttonScene) {
+                    autoPlanScene = when (autoPlanScene) {
                         "on" -> "off"
                         else -> "on"
                     }
                     viewModel.onEvent(AddEditTodoEvent.ChangeAutoPlan(!viewModel.todoPlan.value))
                 }) {
                     Crossfade(
-                        targetState = buttonScene,
-                        animationSpec = tween(durationMillis = 500)) { buttonScene->
-                        when (buttonScene) {
+                        targetState = autoPlanScene,
+                        animationSpec = tween(durationMillis = 500)
+                    ) { autoPlanScene->
+                        when (autoPlanScene) {
                             "on" -> Image (
                                 painter = painterResource(id = R.drawable.swon),
                                 contentDescription = null,
                                 modifier = Modifier.size(65.dp)
                             )
                             else -> Image(
-                                    painter =  painterResource(id = R.drawable.swoff),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(65.dp)
-                                )
+                                painter =  painterResource(id = R.drawable.swoff),
+                                contentDescription = null,
+                                modifier = Modifier.size(65.dp)
+                            )
                         }
                     }
                 }
             }
-            if (viewModel.todoPlan.value){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(80.dp)
-                        .padding(start = 25.dp, end = 30.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    Text(
-                        text = "預計費時",
-                        color = MaterialTheme.colors.onSecondary,
-                        style = MaterialTheme.typography.body1
-                    )
-                    Column(modifier = Modifier.padding(start = 50.dp, end = 10.dp, top = 20.dp))
-                    {
-                        Text(
-                            text = viewModel.todoEsTime.value.toString() + "hr",
-                            color = MaterialTheme.colors.onSecondary,
-                            style = MaterialTheme.typography.body1
-                        )
-                        Slider(
-                            value = viewModel.todoEsTime.value.toFloat(),
-                            onValueChange = { pos ->
-                                viewModel.onEvent(AddEditTodoEvent.ChangeEsTime((pos).toInt())) },
-                            steps = 7,
-                            valueRange = 0f..8f,
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colors.onBackground,
-                                inactiveTrackColor = DarkGray,
-                                activeTrackColor = MaterialTheme.colors.primary,
-                                inactiveTickColor = White,
-                                activeTickColor = MaterialTheme.colors.onPrimary
+            Crossfade(
+                targetState = autoPlanScene,
+                animationSpec = tween(durationMillis = 500)) { autoPlanScene->
+                when (autoPlanScene) {
+                    "on"-> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(80.dp)
+                                .padding(start = 25.dp, end = 30.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ){
+                            Text(
+                                text = "預計費時",
+                                color = MaterialTheme.colors.onSecondary,
+                                style = MaterialTheme.typography.body1
                             )
-                        )
+                            Column(modifier = Modifier.padding(start = 50.dp, end = 10.dp, top = 20.dp))
+                            {
+                                Text(
+                                    text = viewModel.todoEsTime.value.toString() + "hr",
+                                    color = MaterialTheme.colors.onSecondary,
+                                    style = MaterialTheme.typography.body1
+                                )
+                                Slider(
+                                    value = viewModel.todoEsTime.value.toFloat(),
+                                    onValueChange = { pos ->
+                                        viewModel.onEvent(AddEditTodoEvent.ChangeEsTime((pos).toInt())) },
+                                    steps = 7,
+                                    valueRange = 0f..8f,
+                                    colors = SliderDefaults.colors(
+                                        thumbColor = MaterialTheme.colors.onBackground,
+                                        inactiveTrackColor = DarkGray,
+                                        activeTrackColor = MaterialTheme.colors.primary,
+                                        inactiveTickColor = White,
+                                        activeTickColor = MaterialTheme.colors.onPrimary
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    else -> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(80.dp)
+                                .padding(start = 20.dp, end = 30.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "安排日",
+                                color = MaterialTheme.colors.onSecondary,
+                                style = MaterialTheme.typography.body1
+                            )
+                            TextButton(
+                                modifier = Modifier
+                                    .size(250.dp, 65.dp)
+                                    .padding(start = 40.dp, top = 7.dp),
+                                onClick = { pDatePickerDialog.show() },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = MaterialTheme.colors.background,
+                                    contentColor = MaterialTheme.colors.background,
+                                ),
+                                elevation = ButtonDefaults.elevation(
+                                    defaultElevation = 0.dp,
+                                    pressedElevation = 0.dp
+                                ),
+                            ){
+                                Text(
+                                    text = viewModel.todoPlanDate.value,
+                                    modifier = Modifier.size(200.dp),
+                                    textAlign = TextAlign.Left,
+                                    color = MaterialTheme.colors.onSecondary,
+                                    style = MaterialTheme.typography.body1
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(50.dp))
+                        }
                     }
                 }
-            }
-            else{
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(80.dp)
-                        .padding(start = 20.dp, end = 30.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "安排日",
-                        color = MaterialTheme.colors.onSecondary,
-                        style = MaterialTheme.typography.body1
-                    )
-                    TextButton(
-                        modifier = Modifier
-                            .size(250.dp, 65.dp)
-                            .padding(start = 40.dp, top = 7.dp),
-                        onClick = { pDatePickerDialog.show() },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.background,
-                            contentColor = MaterialTheme.colors.background,
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 0.dp
-                        ),
-                    ){
-                        Text(
-                            text = viewModel.todoPlanDate.value,
-                            modifier = Modifier.size(200.dp),
-                            textAlign = TextAlign.Left,
-                            color = MaterialTheme.colors.onSecondary,
-                            style = MaterialTheme.typography.body1
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(50.dp))
-                }
+
             }
 
             if(!isAddPage) {
