@@ -1,6 +1,7 @@
 package com.example.afinal.feature_task.presentation.add_edit_task
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
@@ -60,9 +61,9 @@ class AddEditTaskViewModel @Inject constructor(
 
     var currentTaskId: Int? = null
 
-    val workTimeForWeekDay: Int = 3
-    val workTimeForWeenkend: Int = 8
-    val unitTime: Int = 2
+    private val workTimeForWeekDay: Int = 3
+    private val workTimeForWeenkend: Int = 8
+    private val unitTime: Int = 2
 
     init {
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
@@ -126,7 +127,6 @@ class AddEditTaskViewModel @Inject constructor(
             is AddEditTaskEvent.SaveTask -> {
                 viewModelScope.launch {
                     try {
-//                        todoUseCases.deleteTodoByTaskId(null)
                         val lastid = taskUseCases.addTask(
                             Task(
                                 title = taskTitle.value.text,
@@ -190,7 +190,7 @@ class AddEditTaskViewModel @Inject constructor(
                                 dates[index] = Pair(dates[index].first, dates[index].second+t)
                                 Log.d("after copy, first :" + dates[index].first+ " second: " + dates[index].second.toString(),  "debug")
                                 if (dates[index].second > workTimeForWeekDay){
-                                    //throw TimeException("代辦事項時長已超過舒適時長!")
+
                                 }
                                 if (index+1 == numberOfDate) {
                                     if (dates[index].second > dates[0].second) index = 0
@@ -222,4 +222,3 @@ class AddEditTaskViewModel @Inject constructor(
     }
 }
 
-class TimeException(messege: String) : Exception(messege)
