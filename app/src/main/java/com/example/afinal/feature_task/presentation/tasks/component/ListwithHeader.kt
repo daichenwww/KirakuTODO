@@ -77,17 +77,8 @@ fun ListwithHeader(
                                     style = MaterialTheme.typography.body1,
                                     modifier = Modifier.absoluteOffset(0.dp, (-10).dp)
                                 )
-                            } //TODO: update stamp
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Image(
-                                painter = painterResource(id = R.drawable.s_000),
-                                contentDescription = null
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Image(
-                                painter = painterResource(id = R.drawable.s_001),
-                                contentDescription = null
-                            )
+                            }
+                            // no stamp in task mode.
                         }
                     }
                 }

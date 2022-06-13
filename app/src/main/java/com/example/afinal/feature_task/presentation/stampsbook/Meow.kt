@@ -95,6 +95,13 @@ fun Meow(number: String, locked: Boolean, unlockedCondition: String, /*image: ?*
                         modifier = Modifier.size(140.dp, 90.dp)
                     )
                 }
+                "011"-> {
+                    Image(
+                        painter = painterResource(id = R.drawable.stamp_011),
+                        contentDescription = null,
+                        modifier = Modifier.size(140.dp, 90.dp)
+                    )
+                }
                 "012"-> {
                     Image(
                         painter = painterResource(id = R.drawable.stamp_012),

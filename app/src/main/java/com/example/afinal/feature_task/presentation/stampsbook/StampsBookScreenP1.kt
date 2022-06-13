@@ -184,7 +184,8 @@ fun StampsBookPageP1(navController: NavController,
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
                         onClick = { /*TODO*/
                             shareImageText(context)
-                        }                    ) {
+                        }
+                    ) {
                         Text(
                             text = "分享",
                             color = MaterialTheme.colors.onSecondary,

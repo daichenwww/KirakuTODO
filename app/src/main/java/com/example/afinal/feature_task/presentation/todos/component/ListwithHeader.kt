@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,21 +15,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.common.util.Screen
 import com.example.afinal.common.util.getDateName
 import com.example.afinal.common.util.getDay
+import com.example.afinal.feature_task.domain.use_case.todo.TodoUseCases
+import com.example.afinal.feature_task.presentation.accumulation.AccumulationViewModel
+import com.example.afinal.feature_task.presentation.stampbook.StampBookViewModel
 import com.example.afinal.feature_task.presentation.todos.TodosState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ListwithHeader(
     state: TodosState,
-    navController: NavController
-) {
+    navController: NavController,
+    ) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth().absoluteOffset(x = (-4).dp, y = (-15).dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .absoluteOffset(x = (-4).dp, y = (-15).dp),
         contentPadding = PaddingValues(15.dp),
     ){
         state.groupByMY.forEach { (section, sectionTodos) ->
@@ -37,7 +48,9 @@ fun ListwithHeader(
                     shape = RoundedCornerShape(20.dp),
                     elevation = 5.dp,
                     backgroundColor = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.fillMaxWidth().padding(top = 15.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp)
                 )
                 {
                     Column(
@@ -57,7 +70,9 @@ fun ListwithHeader(
                 stickyHeader {
                     Card(backgroundColor = MaterialTheme.colors.background,
                         elevation = 0.dp,
-                        modifier = Modifier.fillMaxWidth().padding(top = 5.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp)
                     )
                     {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -78,16 +93,13 @@ fun ListwithHeader(
                                     modifier = Modifier.absoluteOffset(0.dp, (-10).dp)
                                 )
                             } //TODO: update stamp
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Image(
-                                painter = painterResource(id = R.drawable.s_000),
-                                contentDescription = null
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Image(
-                                painter = painterResource(id = R.drawable.s_001),
-                                contentDescription = null
-                            )
+                            LazyRow(
+                                modifier = Modifier.fillMaxSize().padding(bottom = 10.dp),
+                            ){
+                                items(items = subsectionTodos) { todo ->
+                                    StampItem(todo.stamp, todo.done)
+                                }
+                            }
                         }
                     }
                 }
@@ -107,3 +119,4 @@ fun ListwithHeader(
         }
     }
 }
+
