@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.afinal.common.util.getMY
+import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.feature_task.domain.use_case.task.TaskUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -37,5 +39,48 @@ class TasksViewModel @Inject constructor(
                 )
             }
             .launchIn(viewModelScope)
+    }
+
+    fun onEvent(event: TasksEvent) {
+        when(event){
+            is TasksEvent.DoneTask -> {
+                if(event.taskId != null)
+                {
+                    viewModelScope.launch {
+                        taskUseCases.addTask(
+                            Task(
+                                title = taskUseCases.getTask(event.taskId)!!.title,
+                                dueDate = taskUseCases.getTask(event.taskId)!!.dueDate,
+                                color = taskUseCases.getTask(event.taskId)!!.color,
+                                id = taskUseCases.getTask(event.taskId)!!.id,
+                                autoPlan = taskUseCases.getTask(event.taskId)!!.autoPlan,
+                                planDate = taskUseCases.getTask(event.taskId)!!.planDate,
+                                esTimeCost = taskUseCases.getTask(event.taskId)!!.esTimeCost,
+                                done = true
+                            )
+                        )
+                    }
+                }
+            }
+            is TasksEvent.CancelTask -> {
+                if(event.taskId != null)
+                {
+                    viewModelScope.launch {
+                        taskUseCases.addTask(
+                            Task(
+                                title = taskUseCases.getTask(event.taskId)!!.title,
+                                dueDate = taskUseCases.getTask(event.taskId)!!.dueDate,
+                                color = taskUseCases.getTask(event.taskId)!!.color,
+                                id = taskUseCases.getTask(event.taskId)!!.id,
+                                autoPlan = taskUseCases.getTask(event.taskId)!!.autoPlan,
+                                planDate = taskUseCases.getTask(event.taskId)!!.planDate,
+                                esTimeCost = taskUseCases.getTask(event.taskId)!!.esTimeCost,
+                                done = false
+                            )
+                        )
+                    }
+                }
+            }
+        }
     }
 }

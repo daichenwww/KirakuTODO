@@ -1,6 +1,5 @@
 package com.example.afinal.feature_task.presentation.tasks.component
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,9 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.afinal.R
 import com.example.afinal.feature_task.domain.model.Task
 import com.example.afinal.common.util.mapToGraph
-import com.example.afinal.feature_task.presentation.add_edit_task.AddEditTaskEvent
-import com.example.afinal.feature_task.presentation.done_cancel_task.DoneTaskEvent
-import com.example.afinal.feature_task.presentation.done_cancel_task.DoneTaskViewModel
+import com.example.afinal.feature_task.presentation.tasks.TasksEvent
+import com.example.afinal.feature_task.presentation.tasks.TasksViewModel
 import com.example.afinal.ui.theme.BrownBackgroundDark
 import com.example.afinal.ui.theme.BrownBackgroundLight
 import com.example.afinal.ui.theme.BrownWordLight
@@ -34,11 +32,11 @@ import me.saket.swipe.SwipeableActionsBox
 fun TaskItem(
     task: Task,
     modifier: Modifier = Modifier,
-    viewModel: DoneTaskViewModel = hiltViewModel()
+    viewModel: TasksViewModel = hiltViewModel()
 ) {
     val letDone = SwipeAction(
         onSwipe = {
-            viewModel.onEvent(DoneTaskEvent.DoneTask(task.id))
+            viewModel.onEvent(TasksEvent.DoneTask(task.id))
         },
         icon = {
             Icon(
@@ -48,12 +46,12 @@ fun TaskItem(
                 contentDescription = null,
                 tint = BrownWordLight
             )
-        }
-        , background = BrownBackgroundDark,
+        },
+        background = BrownBackgroundDark,
     )
     val cancelDone = SwipeAction(
         onSwipe = {
-            viewModel.onEvent(DoneTaskEvent.CancelTask(task.id))
+            viewModel.onEvent(TasksEvent.CancelTask(task.id))
         },
         icon = {
             Icon(
@@ -67,8 +65,8 @@ fun TaskItem(
         background = BrownBackgroundDark,
     )
     SwipeableActionsBox(
-        startActions = listOf(letDone),
-        endActions = listOf(cancelDone),
+        startActions = listOf(cancelDone),
+        endActions = listOf(letDone),
         modifier = modifier.padding(start = 5.dp)
     ) {
         val rowColor:Color = if(task.done) doneGray else BrownBackgroundLight
