@@ -25,7 +25,7 @@ fun shareImageText(context: Context){
 private fun getContentUri(context: Context): Uri?{
 
     val bitmap: Bitmap = BitmapFactory.decodeResource(context.getResources(),
-        R.drawable.accumulate_share)
+        R.drawable.stampsbook_share)
 
     val bytes = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
