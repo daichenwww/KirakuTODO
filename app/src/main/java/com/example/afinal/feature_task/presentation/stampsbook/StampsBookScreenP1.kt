@@ -6,12 +6,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.common.util.Screen
+import com.example.afinal.feature_task.presentation.common.shareImageText
 import com.example.afinal.feature_task.presentation.stampbook.Meow
 import com.example.afinal.feature_task.presentation.stampbook.StampBookViewModel
 
@@ -168,7 +170,7 @@ fun StampsBookPageP1(navController: NavController,
                 ) {
                     Button( shape = RoundedCornerShape(30.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
-                        onClick = { /*TODO*/ } // navigate to 說明頁面
+                        onClick = {navController.navigate("help")},
                     ) {
                         Text(
                             text = "說明",
@@ -176,11 +178,13 @@ fun StampsBookPageP1(navController: NavController,
                             style = MaterialTheme.typography.body1
                         )
                     }
+                    val context = LocalContext.current
                     Spacer(modifier = Modifier.size(80.dp, 2.dp))
                     Button( shape = RoundedCornerShape(30.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
-                        onClick = { /*TODO*/ }
-                    ) {
+                        onClick = { /*TODO*/
+                            shareImageText(context)
+                        }                    ) {
                         Text(
                             text = "分享",
                             color = MaterialTheme.colors.onSecondary,

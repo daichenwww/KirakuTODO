@@ -1,3 +1,9 @@
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.ui.Alignment
@@ -10,11 +16,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.Image
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.afinal.R
 import com.example.afinal.R.drawable
 import com.example.afinal.feature_task.presentation.accumulation.AccumulationViewModel
+import com.example.afinal.feature_task.presentation.common.shareImageText
+import java.io.ByteArrayOutputStream
 import kotlin.math.roundToInt
 
 @Composable
@@ -168,8 +177,9 @@ fun AccumulationPage(
             ) {
                 Button(shape = RoundedCornerShape(30.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
-                    onClick = { /*TODO*/ }
-                ) {
+                    onClick = {navController.navigate("help")},
+
+                    ) {
                     Text(
                         text = "說明",
                         color = MaterialTheme.colors.onSecondary,
@@ -177,9 +187,12 @@ fun AccumulationPage(
                     )
                 }
                 Spacer(modifier = Modifier.size(80.dp, 2.dp))
-                Button(shape = RoundedCornerShape(30.dp),
+                val context = LocalContext.current
+                Button( shape = RoundedCornerShape(30.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
-                    onClick = { /*TODO*/ }
+                    onClick = { /*TODO*/
+                        shareImageText(context)
+                    }
                 ) {
                     Text(
                         text = "分享",
@@ -191,6 +204,9 @@ fun AccumulationPage(
         }
     }
 }
+
+
+
 
 @Composable
 fun StampsOfAWeek(
