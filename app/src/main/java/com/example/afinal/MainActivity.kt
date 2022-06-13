@@ -84,8 +84,8 @@ class MainActivity : ComponentActivity() {
         //notice!! calendar must choose import java.util, not import android.icu
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 13)
-            set(Calendar.MINUTE, 23)
+            set(Calendar.HOUR_OF_DAY, 14)
+            set(Calendar.MINUTE, 7)
         }
         val alarmMgr = context.getSystemService(ComponentActivity.ALARM_SERVICE) as AlarmManager
         //notice！！ don't choose android.app.Notification
