@@ -38,9 +38,9 @@ private fun showNotification(context: Context, title: String, desc: String){
     val builder = NotificationCompat.Builder(context, channelId)
         .setContentTitle(title)
         .setContentText(desc)
-        .setSmallIcon(R.mipmap.ic_launcher)
+        .setSmallIcon(R.drawable.icon)
         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-            R.mipmap.ic_launcher))//i need app icon
+            R.drawable.icon))//i need app icon
 
 
     manager.notify(1, builder.build())
