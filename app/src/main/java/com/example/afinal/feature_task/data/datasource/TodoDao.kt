@@ -32,7 +32,7 @@ interface TodoDao {
 
     // edited by: zshzzz
     // 1. searchTaskInRange
-    @Query("SELECT COUNT(*) FROM todo WHERE dueDate >= :start AND dueDate < :end AND done=1")
+    @Query("SELECT COUNT(*) FROM todo WHERE dueDate >= :start AND dueDate <= :end AND done=1")
     suspend fun getDoneTodoNumberInRange(end: String, start: String): Int
 
     // 2. find the task number which has been done
