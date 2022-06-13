@@ -47,6 +47,8 @@ class TodosViewModel @Inject constructor(
                 if(event.todoId != null)
                 {
                     viewModelScope.launch {
+                        val num = todoUseCases.getDoneTodoNumber()
+                        val unlocked = getUnlockStamps(num)
                         todoUseCases.addTodo(
                             Todo(
                                 title = todoUseCases.getTodo(event.todoId)!!.title,
@@ -57,7 +59,7 @@ class TodosViewModel @Inject constructor(
                                 taskId = todoUseCases.getTodo(event.todoId)!!.taskId,
                                 esTimeCost = todoUseCases.getTodo(event.todoId)!!.esTimeCost,
                                 done = true,
-                                stamp = 1
+                                stamp = (0..unlocked).random()
                             )
                         )
                     }
@@ -85,4 +87,27 @@ class TodosViewModel @Inject constructor(
             }
         }
     }
+}
+
+
+fun getUnlockStamps(done:Int) :Int{
+    when(done){
+        0 -> return 0
+        in 1..4 -> return 1
+        in 5..9 -> return 2
+        in 10..14 -> return 3
+        in 15..19 -> return 4
+        in 20..29 -> return 5
+        in 30..49 -> return 6
+        in 50..74 -> return 7
+        in 75..99 -> return 8
+        in 100..149 -> return 9
+        in 150..199 -> return 10
+        in 200..299 -> return 11
+        in 300..499 -> return 12
+        in 500..749 -> return 13
+        in 750..999 -> return 14
+        else -> return 15
+    }
+
 }
