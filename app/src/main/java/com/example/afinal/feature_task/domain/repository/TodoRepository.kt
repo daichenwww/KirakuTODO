@@ -11,4 +11,8 @@ interface TodoRepository {
     suspend fun deleteTodo(id: Int)
     suspend fun deleteTodoByTaskId(taskId: Int)
     suspend fun getTodoByDate(date: String): List<Todo>?
+
+    suspend fun getDoneTodoNumberInRange(start: String, end: String): Int
+
+    suspend fun getDoneTodoNumber(): Int
 }

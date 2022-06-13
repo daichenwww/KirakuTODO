@@ -35,4 +35,12 @@ class TodoRepositoryImpl (
     override suspend fun getTodoByDate(date: String): List<Todo>? {
         return dao.getTodoByDate(date)
     }
+
+    override suspend fun getDoneTodoNumberInRange(start: String, end: String): Int{
+        return dao.getDoneTodoNumberInRange(start, end)
+    }
+
+    override suspend fun getDoneTodoNumber(): Int{
+        return dao.getDoneTodoNumber()
+    }
 }

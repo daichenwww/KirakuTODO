@@ -25,7 +25,9 @@ data class Todo(
     @ColumnInfo (name = "color") val color: Int,
     @ColumnInfo (name = "autoPlan") val autoPlan: Boolean,
     @ColumnInfo (name = "esTimeCost") val esTimeCost: Int,
-    @ColumnInfo (name = "done") val done: Boolean
+    @ColumnInfo (name = "done") val done: Boolean,
+    @ColumnInfo (name = "stamp") val stamp: Int
+
 )
 
 class InvalidTodoException(message: String): Exception(message)

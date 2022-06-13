@@ -56,7 +56,8 @@ class TodosViewModel @Inject constructor(
                                 autoPlan = todoUseCases.getTodo(event.todoId)!!.autoPlan,
                                 taskId = todoUseCases.getTodo(event.todoId)!!.taskId,
                                 esTimeCost = todoUseCases.getTodo(event.todoId)!!.esTimeCost,
-                                done = true
+                                done = true,
+                                stamp = 1
                             )
                         )
                     }
@@ -75,7 +76,8 @@ class TodosViewModel @Inject constructor(
                                 autoPlan = todoUseCases.getTodo(event.todoId)!!.autoPlan,
                                 taskId = todoUseCases.getTodo(event.todoId)!!.taskId,
                                 esTimeCost = todoUseCases.getTodo(event.todoId)!!.esTimeCost,
-                                done = false
+                                done = false,
+                                stamp = 1
                             )
                         )
                     }

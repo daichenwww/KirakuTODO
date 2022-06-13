@@ -61,7 +61,9 @@ object AppModule {
             deleteTodoByTaskId = DeleteTodoByTaskId(repository),
             addTodo = AddTodo(repository),
             getTodo = GetTodo(repository),
-            getTimeByDate = GetTimeByDate(repository)
+            getTimeByDate = GetTimeByDate(repository),
+            getDoneTodoNumber = GetDoneTodoNumber(repository),
+            getDoneTodoNumberInRange = GetDoneTodoNumberInRange(repository)
         )
     }
 }

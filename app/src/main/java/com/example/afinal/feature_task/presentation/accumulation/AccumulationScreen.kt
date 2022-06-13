@@ -23,7 +23,7 @@ import com.example.afinal.R.drawable
 import java.io.ByteArrayOutputStream
 
 @Composable
-fun AccumulationPage(navController: NavController, weeks: String){
+fun AccumulationPage(navController: NavController){
     Scaffold(
         topBar = {
             TopAppBar(

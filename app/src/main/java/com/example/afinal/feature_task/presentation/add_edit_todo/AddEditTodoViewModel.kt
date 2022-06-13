@@ -123,7 +123,8 @@ class AddEditTodoViewModel @Inject constructor(
                                 id = currentTodoId,
                                 autoPlan = todoPlan.value,
                                 esTimeCost = todoEsTime.value,
-                                done = todoDone.value
+                                done = todoDone.value,
+                                stamp = 1
                             )
                         )
                         _eventFlow.emit(UiEvent.SaveTodo)

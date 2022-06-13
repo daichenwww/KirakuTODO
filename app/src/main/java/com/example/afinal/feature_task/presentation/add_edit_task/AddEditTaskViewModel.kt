@@ -149,7 +149,8 @@ class AddEditTaskViewModel @Inject constructor(
                                     id = if (currentTaskId!=null) (currentTaskId!!*100) else null,
                                     autoPlan = taskPlan.value,
                                     esTimeCost = taskEsTime.value,
-                                    done = taskDone.value
+                                    done = taskDone.value,
+                                    stamp = 1
                                 )
                             )
                         }
@@ -182,7 +183,8 @@ class AddEditTaskViewModel @Inject constructor(
                                         id = if (currentTaskId != null) (currentTaskId!!*100+idd) else null,
                                         autoPlan = taskPlan.value,
                                         esTimeCost = t,
-                                        done = taskDone.value
+                                        done = taskDone.value,
+                                        stamp = 1
                                     )
                                 )
                                 taskTime -= t

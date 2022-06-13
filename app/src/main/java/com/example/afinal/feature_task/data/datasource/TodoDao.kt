@@ -29,4 +29,13 @@ interface TodoDao {
 
     @Query("SELECT * FROM todo WHERE dueDate = :date")
     suspend fun getTodoByDate(date: String): List<Todo>?
+
+    // edited by: zshzzz
+    // 1. searchTaskInRange
+    @Query("SELECT COUNT(*) FROM todo WHERE dueDate >= :start AND dueDate < :end AND done=1")
+    suspend fun getDoneTodoNumberInRange(end: String, start: String): Int
+
+    // 2. find the task number which has been done
+    @Query("SELECT COUNT(*) FROM todo WHERE done = 1")
+    suspend fun getDoneTodoNumber(): Int
 }

@@ -4,6 +4,8 @@ import AccumulationPage
 import HelpPage
 import SettingPage
 import StampsBookPage
+import StampsBookPageP1
+import StampsBookPageP2
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -26,6 +28,7 @@ import com.example.afinal.feature_task.presentation.add_edit_todo.AddTodoScreen
 import com.example.afinal.feature_task.presentation.tasks.TasksScreen
 import com.example.afinal.common.util.Screen
 import com.example.afinal.feature_task.presentation.add_edit_todo.EditTodoScreen
+import com.example.afinal.feature_task.presentation.stampbook.StampsBookPageP3
 import com.example.afinal.feature_task.presentation.todos.TodosScreen
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -68,9 +71,11 @@ class MainActivity : ComponentActivity() {
                         ) { EditTodoScreen(navController = navController) }
 //                        composable("addtask")  { AddTaskPage(navController = navController)}
                         composable("setting")  { SettingPage(navController = navController)}
-                        composable("accumulation")  { AccumulationPage(navController = navController, "1")}
-                        composable("stampsbook")  { StampsBookPage(navController = navController, "1")}
+                        composable("accumulation")  { AccumulationPage(navController = navController)}
                         composable("help")  { HelpPage(navController = navController)}
+                        composable("stampsbookp1")  { StampsBookPageP1(navController = navController)}
+                        composable("stampsbookp2")  { StampsBookPageP2(navController = navController)}
+                        composable("stampsbookp3")  { StampsBookPageP3(navController = navController) }
                     }
 
                 }
@@ -90,7 +95,7 @@ class MainActivity : ComponentActivity() {
         val alarmMgr = context.getSystemService(ComponentActivity.ALARM_SERVICE) as AlarmManager
         //notice！！ don't choose android.app.Notification
         val intent = Intent(context, Notification::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
 
         /*alarmMgr.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,

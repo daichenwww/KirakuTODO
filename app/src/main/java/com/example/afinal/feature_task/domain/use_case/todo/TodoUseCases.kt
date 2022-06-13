@@ -6,6 +6,8 @@ class TodoUseCases (
     val addTodo: AddTodo,
     val deleteTodo: DeleteTodo,
     val deleteTodoByTaskId: DeleteTodoByTaskId,
-    val getTimeByDate: GetTimeByDate
+    val getTimeByDate: GetTimeByDate,
 //    val addTodoByTask: AddTodoByTask,
+    val getDoneTodoNumber: GetDoneTodoNumber,
+    val getDoneTodoNumberInRange: GetDoneTodoNumberInRange
 )
