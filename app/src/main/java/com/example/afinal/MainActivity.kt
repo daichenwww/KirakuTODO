@@ -4,6 +4,10 @@ import AccumulationPage
 import HelpPage
 import SettingPage
 import StampsBookPage
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +28,7 @@ import com.example.afinal.common.util.Screen
 import com.example.afinal.feature_task.presentation.add_edit_todo.EditTodoScreen
 import com.example.afinal.feature_task.presentation.todos.TodosScreen
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @ExperimentalAnimationApi
@@ -71,5 +76,32 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        //owo
+        val context = applicationContext
+        setAlarm(context)//owo
+    }
+    private fun setAlarm(context: Context) {
+        //notice!! calendar must choose import java.util, not import android.icu
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 16)
+            set(Calendar.MINUTE, 58)
+        }
+        val alarmMgr = context.getSystemService(ComponentActivity.ALARM_SERVICE) as AlarmManager
+        //notice！！ don't choose android.app.Notification
+        val intent = Intent(context, Notification::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+
+        /*alarmMgr.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )*/
+        alarmMgr.setExact(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
     }
 }

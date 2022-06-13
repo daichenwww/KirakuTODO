@@ -26,6 +26,7 @@ import com.example.afinal.feature_task.presentation.done_cancel_task.DoneTaskVie
 import com.example.afinal.ui.theme.BrownBackgroundDark
 import com.example.afinal.ui.theme.BrownBackgroundLight
 import com.example.afinal.ui.theme.BrownWordLight
+import com.example.afinal.ui.theme.doneGray
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
@@ -70,11 +71,11 @@ fun TaskItem(
         endActions = listOf(cancelDone),
         modifier = modifier.padding(start = 5.dp)
     ) {
-        val rowColor:Color = if(task.done) Color.Gray else BrownBackgroundLight
+        val rowColor:Color = if(task.done) doneGray else BrownBackgroundLight
         Row(
             modifier = modifier
-                .padding(start = 5.dp)
-                .background(rowColor),,
+                .padding(start = 0.dp)
+                .background(rowColor),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
